@@ -1,0 +1,9 @@
+﻿.idea
+*__pycache__*
+*.vscode*
+*.pyc
+*.pth
+*.pt
+*.dat
+# 忽略datasets文件夹下的所有内容
+datasets/
