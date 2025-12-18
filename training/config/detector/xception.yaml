@@ -16,13 +16,13 @@ backbone_config:
 # dataset
 all_dataset: [FaceForensics++, FF-F2F, FF-DF, FF-FS, FF-NT, FaceShifter, DeepFakeDetection, Celeb-DF-v1, Celeb-DF-v2, DFDCP, DFDC, DeeperForensics-1.0, UADFV]
 train_dataset: [FaceForensics++]
-test_dataset: [FaceForensics++, DeepFakeDetection]
+test_dataset: [FaceForensics++, DeepFakeDetection, Celeb-DF-v1, Celeb-DF-v2, DFDC, UADFV]
 
 compression: c23  # compression-level for videos
 train_batchSize: 64   # training batch size
-test_batchSize: 32   # test batch size
+test_batchSize: 8   # test batch size
 workers: 0   # number of data loading workers
-frame_num: {'train': 32, 'test': 32}   # number of frames to use per video in training and testing
+frame_num: {'train': 32, 'test': 8}   # number of frames to use per video in training and testing
 resolution: 256   # resolution of output image to network
 with_mask: false   # whether to include mask information in the input
 with_landmark: false   # whether to include facial landmark information in the input
@@ -64,14 +64,14 @@ optimizer:
 
 # training config
 lr_scheduler: null   # learning rate scheduler
-nEpochs: 10   # number of epochs to train for
+nEpochs: 1   # number of epochs to train for
 start_epoch: 0   # manual epoch number (useful for restarts)
 save_epoch: 1   # interval epochs for saving models
 rec_iter: 100   # interval iterations for recording
 logdir: ./logs   # folder to output images and logs
 manualSeed: 1024   # manual seed for random number generation
 save_ckpt: true   # whether to save checkpoint
-save_feat: true   # whether to save features
+save_feat: false   # whether to save features
 
 # loss function
 loss_func: cross_entropy   # loss function to use

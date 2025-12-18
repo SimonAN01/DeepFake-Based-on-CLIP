@@ -39,11 +39,14 @@ from logger import create_logger
 parser = argparse.ArgumentParser(description='Process some paths.')
 # 参数名:参数值 这种键值对
 parser.add_argument('--detector_path', type=str, 
+                    # type=str 表示参数值类型是字符串
+                    # default 指定默认的配置文件路径（未传参时使用）
                     default='/home/zhiyuanyan/DeepfakeBench/training/config/detector/resnet34.yaml',
+                    # help 是帮助文本，在 --help 输出中显示
                     help='path to detector YAML file')
 parser.add_argument("--test_dataset", nargs="+")
 parser.add_argument('--weights_path', type=str, 
-                    default='/mntcephfs/lab_data/zhiyuanyan/benchmark_results/auc_draw/cnn_aug/resnet34_2023-05-20-16-57-22/test/FaceForensics++/ckpt_epoch_9_best.pth')
+                    default='training/weights/xception_best.pth')
 # parser.add_argument("--lmdb", action='store_true', default=False)
 
 # 这行代码的功能是解析命令行参数，并将解析结果存储在 args 变量中。

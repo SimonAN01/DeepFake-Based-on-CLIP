@@ -32,9 +32,16 @@ def get_test_metrics(y_pred, y_true, img_names):
         result_dict = {}
         new_label = []
         new_pred = []
-        # print(image[0])
-        # print(pred.shape)
-        # print(label.shape)
+
+        # Ensure image, pred, and label have the same length to avoid shape mismatch.
+        image = np.array(image)
+        pred = np.array(pred)
+        label = np.array(label)
+        n = min(len(image), len(pred), len(label))
+        image = image[:n]
+        pred = pred[:n]
+        label = label[:n]
+
         for item in np.transpose(np.stack((image, pred, label)), (1, 0)):
 
             s = item[0]

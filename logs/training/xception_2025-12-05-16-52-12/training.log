@@ -1,0 +1,184 @@
+2025-12-05 16:52:12,642 - INFO - Save log to ./logs/training/xception_2025-12-05-16-52-12
+2025-12-05 16:52:12,642 - INFO - --------------- Configuration ---------------
+2025-12-05 16:52:12,642 - INFO - Parameters: 
+log_dir: ./logs/training/
+pretrained: ./training/pretrained/xception-b5690688.pth
+model_name: xception
+backbone_name: xception
+backbone_config: {'mode': 'original', 'num_classes': 2, 'inc': 3, 'dropout': False}
+all_dataset: ['FaceForensics++', 'FF-F2F', 'FF-DF', 'FF-FS', 'FF-NT', 'FaceShifter', 'DeepFakeDetection', 'Celeb-DF-v1', 'Celeb-DF-v2', 'DFDCP', 'DFDC', 'DeeperForensics-1.0', 'UADFV']
+train_dataset: ['FaceForensics++']
+test_dataset: ['FaceForensics++', 'DeepFakeDetection', 'Celeb-DF-v1', 'Celeb-DF-v2', 'DFDC', 'UADFV']
+compression: c23
+train_batchSize: 64
+test_batchSize: 8
+workers: 0
+frame_num: {'train': 32, 'test': 8}
+resolution: 256
+with_mask: False
+with_landmark: False
+use_data_augmentation: True
+data_aug: {'flip_prob': 0.5, 'rotate_prob': 0.0, 'rotate_limit': [-10, 10], 'blur_prob': 0.5, 'blur_limit': [3, 7], 'brightness_prob': 0.5, 'brightness_limit': [-0.1, 0.1], 'contrast_limit': [-0.1, 0.1], 'quality_lower': 40, 'quality_upper': 100}
+mean: [0.5, 0.5, 0.5]
+std: [0.5, 0.5, 0.5]
+optimizer: {'type': 'adam', 'adam': {'lr': 0.0002, 'beta1': 0.9, 'beta2': 0.999, 'eps': 1e-08, 'weight_decay': 0.0005, 'amsgrad': False}, 'sgd': {'lr': 0.0002, 'momentum': 0.9, 'weight_decay': 0.0005}}
+lr_scheduler: None
+nEpochs: 1
+start_epoch: 0
+save_epoch: 1
+rec_iter: 100
+logdir: ./logs
+manualSeed: 1024
+save_ckpt: True
+save_feat: True
+loss_func: cross_entropy
+losstype: None
+metric_scoring: auc
+cuda: True
+cudnn: True
+mode: train
+lmdb: True
+dry_run: False
+rgb_dir: ./datasets/rgb
+lmdb_dir: ./datasets/lmdb
+dataset_json_folder: preprocessing/dataset_json
+SWA: False
+save_avg: True
+label_dict: {'DFD_fake': 1, 'DFD_real': 0, 'FF-SH': 1, 'FF-F2F': 1, 'FF-DF': 1, 'FF-FS': 1, 'FF-NT': 1, 'FF-FH': 1, 'FF-real': 0, 'CelebDFv1_real': 0, 'CelebDFv1_fake': 1, 'CelebDFv2_real': 0, 'CelebDFv2_fake': 1, 'DFDCP_Real': 0, 'DFDCP_FakeA': 1, 'DFDCP_FakeB': 1, 'DFDC_Fake': 1, 'DFDC_Real': 0, 'DF_fake': 1, 'DF_real': 0, 'UADFV_Fake': 1, 'UADFV_Real': 0, 'roop_Real': 0, 'roop_Fake': 1}
+local_rank: 0
+ddp: False
+
+2025-12-05 16:52:14,071 - INFO - Load pretrained model successfully!
+2025-12-05 16:52:14,161 - INFO - ===> Epoch[0] start!
+2025-12-05 16:52:14,184 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\train\FaceForensics++\data_dict_train.pickle
+2025-12-05 16:52:22,863 - INFO - Iter: 0    training-loss, overall: 0.7274411916732788    training-loss, cls: 0.7274411916732788    
+2025-12-05 16:52:22,870 - INFO - Iter: 0    training-metric, acc: 0.296875    training-metric, auc: 0.6294642857142857    training-metric, eer: 0.375    training-metric, ap: 0.9167552609500176    
+2025-12-05 16:55:47,791 - INFO - Iter: 300    training-loss, overall: 0.37068164348602295    training-loss, cls: 0.37068164348602295    
+2025-12-05 16:55:47,794 - INFO - Iter: 300    training-metric, acc: 0.8417708333333334    training-metric, auc: 0.822014415272375    training-metric, eer: 0.2540328559183055    training-metric, ap: 0.944013658323768    
+2025-12-05 17:00:08,178 - INFO - Iter: 600    training-loss, overall: 0.2592879831790924    training-loss, cls: 0.2592879831790924    
+2025-12-05 17:00:08,179 - INFO - Iter: 600    training-metric, acc: 0.8896875    training-metric, auc: 0.9341229101907811    training-metric, eer: 0.13977826104064509    training-metric, ap: 0.9818159425008955    
+2025-12-05 17:04:14,434 - INFO - Iter: 900    training-loss, overall: 0.21949249505996704    training-loss, cls: 0.21949249505996704    
+2025-12-05 17:04:14,435 - INFO - Iter: 900    training-metric, acc: 0.9088020833333333    training-metric, auc: 0.9546783104109344    training-metric, eer: 0.11172465070762286    training-metric, ap: 0.9875443161332119    
+2025-12-05 17:08:31,791 - INFO - Iter: 1200    training-loss, overall: 0.19154030084609985    training-loss, cls: 0.19154030084609985    
+2025-12-05 17:08:31,792 - INFO - Iter: 1200    training-metric, acc: 0.919375    training-metric, auc: 0.9662460104806316    training-metric, eer: 0.09268902362400816    training-metric, ap: 0.9913734711930766    
+2025-12-05 17:12:44,447 - INFO - Iter: 1500    training-loss, overall: 0.18616949021816254    training-loss, cls: 0.18616949021816254    
+2025-12-05 17:12:44,447 - INFO - Iter: 1500    training-metric, acc: 0.9225    training-metric, auc: 0.9688569663907841    training-metric, eer: 0.08691824206065688    training-metric, ap: 0.9918919542860211    
+2025-12-05 17:16:50,747 - INFO - ===> Test start!
+2025-12-05 17:16:50,751 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\FaceForensics++\data_dict_test.pickle
+2025-12-05 17:17:24,824 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\FaceForensics++\metric_dict_best.pickle
+2025-12-05 17:17:24,831 - INFO - dataset: FaceForensics++    step: 1795    testing-loss, overall: 0.2618655264377594    testing-loss, cls: 0.2618655264377594    
+2025-12-05 17:17:24,851 - INFO - dataset: FaceForensics++    step: 1795    testing-metric, acc: 0.9067857142857143    testing-metric, auc: 0.9669242267219387    testing-metric, eer: 0.08839285714285715    testing-metric, ap: 0.9915966117478018    testing-metric, video_auc: 0.9892857142857143    testing-metric, acc_real:0.9223214285714286; acc_fake:0.9029017857142857
+2025-12-05 17:17:24,864 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\data_dict_test.pickle
+2025-12-05 17:20:17,886 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\ckpt_best.pth, current ckpt is 0+1795
+2025-12-05 17:20:17,888 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\metric_dict_best.pickle
+2025-12-05 17:20:17,897 - INFO - dataset: DeepFakeDetection    step: 1795    testing-loss, overall: 0.6674776077270508    testing-loss, cls: 0.6674776077270508    
+2025-12-05 17:20:17,912 - INFO - dataset: DeepFakeDetection    step: 1795    testing-metric, acc: 0.7151573066745075    testing-metric, auc: 0.7810172559115036    testing-metric, eer: 0.2970262793914246    testing-metric, ap: 0.9631464516293183    testing-metric, video_auc: 0.8187703399409502    testing-metric, acc_real:0.6877593360995851; acc_fake:0.7184158578713604
+2025-12-05 17:20:17,915 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\data_dict_test.pickle
+2025-12-05 17:20:24,128 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\ckpt_best.pth, current ckpt is 0+1795
+2025-12-05 17:20:24,130 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\metric_dict_best.pickle
+2025-12-05 17:20:24,146 - INFO - dataset: Celeb-DF-v1    step: 1795    testing-loss, overall: 1.0889673233032227    testing-loss, cls: 1.0889673233032227    
+2025-12-05 17:20:24,166 - INFO - dataset: Celeb-DF-v1    step: 1795    testing-metric, acc: 0.53875    testing-metric, auc: 0.5884642932937182    testing-metric, eer: 0.4407894736842105    testing-metric, ap: 0.69965861792504    testing-metric, video_auc: 0.6061120543293719    testing-metric, acc_real:0.6414473684210527; acc_fake:0.47580645161290325
+2025-12-05 17:20:24,178 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\data_dict_test.pickle
+2025-12-05 17:20:48,240 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\ckpt_best.pth, current ckpt is 0+1795
+2025-12-05 17:20:48,242 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\metric_dict_best.pickle
+2025-12-05 17:20:48,264 - INFO - dataset: Celeb-DF-v2    step: 1795    testing-loss, overall: 0.9558274745941162    testing-loss, cls: 0.9558274745941162    
+2025-12-05 17:20:48,285 - INFO - dataset: Celeb-DF-v2    step: 1795    testing-metric, acc: 0.5822662478859628    testing-metric, auc: 0.6856286013348256    testing-metric, eer: 0.3664552501761804    testing-metric, ap: 0.7849490943848185    testing-metric, video_auc: 0.718258426966292    testing-metric, acc_real:0.7343199436222692; acc_fake:0.5029411764705882
+2025-12-05 17:20:48,295 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\DFDC\data_dict_test.pickle
+2025-12-05 17:24:28,783 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\DFDC\ckpt_best.pth, current ckpt is 0+1795
+2025-12-05 17:24:28,787 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\DFDC\metric_dict_best.pickle
+2025-12-05 17:24:28,797 - INFO - dataset: DFDC    step: 1795    testing-loss, overall: 0.9327501654624939    testing-loss, cls: 0.9327501654624939    
+2025-12-05 17:24:28,820 - INFO - dataset: DFDC    step: 1795    testing-metric, acc: 0.6340374805943668    testing-metric, auc: 0.7040887014359549    testing-metric, eer: 0.3592729338256177    testing-metric, ap: 0.7228238186657092    testing-metric, video_auc: 0.7187250419715272    testing-metric, acc_real:0.7285998295938654; acc_fake:0.5438890994747387
+2025-12-05 17:24:28,824 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\UADFV\data_dict_test.pickle
+2025-12-05 17:24:34,735 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\UADFV\ckpt_best.pth, current ckpt is 0+1795
+2025-12-05 17:24:34,738 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\UADFV\metric_dict_best.pickle
+2025-12-05 17:24:34,744 - INFO - dataset: UADFV    step: 1795    testing-loss, overall: 0.3571341633796692    testing-loss, cls: 0.3571341633796692    
+2025-12-05 17:24:34,760 - INFO - dataset: UADFV    step: 1795    testing-metric, acc: 0.8520408163265306    testing-metric, auc: 0.9325996980424823    testing-metric, eer: 0.15051020408163265    testing-metric, ap: 0.9377315986709344    testing-metric, video_auc: 0.9633486047480216    testing-metric, acc_real:0.8290816326530612; acc_fake:0.875
+2025-12-05 17:24:34,913 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\avg\ckpt_best.pth, current ckpt is 0+1795
+2025-12-05 17:24:34,915 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\avg\metric_dict_best.pickle
+2025-12-05 17:24:34,934 - INFO - dataset: avg    step: 1795    testing-metric, acc: 0.7048395942945137    testing-metric, auc: 0.7764537961234038    testing-metric, eer: 0.2837411663836538    testing-metric, ap: 0.8499843655039371    testing-metric, video_auc: 0.8024166970403129    
+2025-12-05 17:24:34,936 - INFO - ===> Test Done!
+2025-12-05 17:24:35,064 - INFO - ===> Epoch[0] end with testing auc: 
+================================ Each dataset best metric ================================ 
+| FaceForensics++:  auc=0.9669242267219387 | 
+| DeepFakeDetection:  auc=0.7810172559115036 | 
+| Celeb-DF-v1:  auc=0.5884642932937182 | 
+| Celeb-DF-v2:  auc=0.6856286013348256 | 
+| DFDC:  auc=0.7040887014359549 | 
+| UADFV:  auc=0.9325996980424823 | 
+============================================================================================= 
+================================== Average best metric ====================================== 
+| avg auc: 0.7764537961234038 | 
+| FaceForensics++: 0.9669242267219387 | 
+| DeepFakeDetection: 0.7810172559115036 | 
+| Celeb-DF-v1: 0.5884642932937182 | 
+| Celeb-DF-v2: 0.6856286013348256 | 
+| DFDC: 0.7040887014359549 | 
+| UADFV: 0.9325996980424823 | 
+=============================================================================================!
+2025-12-05 17:24:35,068 - INFO - ===> Epoch[1] start!
+2025-12-05 17:24:35,111 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\train\FaceForensics++\data_dict_train.pickle
+2025-12-05 17:24:36,067 - INFO - Iter: 1796    training-loss, overall: 0.3520219326019287    training-loss, cls: 0.3520219326019287    
+2025-12-05 17:24:36,068 - INFO - Iter: 1796    training-metric, acc: 0.859375    training-metric, auc: 0.9361979166666667    training-metric, eer: 0.125    training-metric, ap: 0.9804340786183507    
+2025-12-05 17:28:40,045 - INFO - Iter: 2096    training-loss, overall: 0.16524314880371094    training-loss, cls: 0.16524314880371094    
+2025-12-05 17:28:40,047 - INFO - Iter: 2096    training-metric, acc: 0.9325520833333333    training-metric, auc: 0.9755369079041499    training-metric, eer: 0.07639030034579566    training-metric, ap: 0.9936340805967596    
+2025-12-05 17:32:44,521 - INFO - Iter: 2396    training-loss, overall: 0.14709322154521942    training-loss, cls: 0.14709322154521942    
+2025-12-05 17:32:44,523 - INFO - Iter: 2396    training-metric, acc: 0.93890625    training-metric, auc: 0.9821543475488329    training-metric, eer: 0.061015267469601786    training-metric, ap: 0.995543233707121    
+2025-12-05 17:36:58,845 - INFO - ===> Test start!
+2025-12-05 17:36:58,849 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\FaceForensics++\data_dict_test.pickle
+2025-12-05 17:37:32,792 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\FaceForensics++\metric_dict_best.pickle
+2025-12-05 17:37:32,793 - INFO - dataset: FaceForensics++    step: 2693    testing-loss, overall: 0.16388995945453644    testing-loss, cls: 0.16388995945453644    
+2025-12-05 17:37:32,796 - INFO - dataset: FaceForensics++    step: 2693    testing-metric, acc: 0.9373214285714285    testing-metric, auc: 0.9743261718749999    testing-metric, eer: 0.08125    testing-metric, ap: 0.9934969967192491    testing-metric, video_auc: 0.9947448979591836    testing-metric, acc_real:0.8660714285714286; acc_fake:0.9551339285714285
+2025-12-05 17:37:32,812 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\data_dict_test.pickle
+2025-12-05 17:40:20,642 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\ckpt_best.pth, current ckpt is 1+897
+2025-12-05 17:40:20,644 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\metric_dict_best.pickle
+2025-12-05 17:40:20,646 - INFO - dataset: DeepFakeDetection    step: 2693    testing-loss, overall: 0.4823572039604187    testing-loss, cls: 0.4823572039604187    
+2025-12-05 17:40:20,648 - INFO - dataset: DeepFakeDetection    step: 2693    testing-metric, acc: 0.7520582181711262    testing-metric, auc: 0.7864799802257825    testing-metric, eer: 0.29564315352697096    testing-metric, ap: 0.9664991867075856    testing-metric, video_auc: 0.8272980651560975    testing-metric, acc_real:0.6317427385892116; acc_fake:0.7663678236552065
+2025-12-05 17:40:20,650 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\data_dict_test.pickle
+2025-12-05 17:40:26,980 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\ckpt_best.pth, current ckpt is 1+897
+2025-12-05 17:40:26,983 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\metric_dict_best.pickle
+2025-12-05 17:40:26,984 - INFO - dataset: Celeb-DF-v1    step: 2693    testing-loss, overall: 0.777475118637085    testing-loss, cls: 0.777475118637085    
+2025-12-05 17:40:26,986 - INFO - dataset: Celeb-DF-v1    step: 2693    testing-metric, acc: 0.59125    testing-metric, auc: 0.6628687393887946    testing-metric, eer: 0.40131578947368424    testing-metric, ap: 0.7873790164979237    testing-metric, video_auc: 0.6986417657045839    testing-metric, acc_real:0.6710526315789473; acc_fake:0.5423387096774194
+2025-12-05 17:40:26,989 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\data_dict_test.pickle
+2025-12-05 17:40:52,403 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\ckpt_best.pth, current ckpt is 1+897
+2025-12-05 17:40:52,405 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\metric_dict_best.pickle
+2025-12-05 17:40:52,406 - INFO - dataset: Celeb-DF-v2    step: 2693    testing-loss, overall: 0.7521840929985046    testing-loss, cls: 0.7521840929985046    
+2025-12-05 17:40:52,407 - INFO - dataset: Celeb-DF-v2    step: 2693    testing-metric, acc: 0.5986953370379319    testing-metric, auc: 0.6999160552170128    testing-metric, eer: 0.36504580690627203    testing-metric, ap: 0.8043899396049266    testing-metric, video_auc: 0.7450760079312624    testing-metric, acc_real:0.7230443974630021; acc_fake:0.5338235294117647
+2025-12-05 17:40:52,413 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\DFDC\data_dict_test.pickle
+2025-12-05 17:44:40,978 - INFO - dataset: DFDC    step: 2693    testing-loss, overall: 0.7950143814086914    testing-loss, cls: 0.7950143814086914    
+2025-12-05 17:44:40,983 - INFO - dataset: DFDC    step: 2693    testing-metric, acc: 0.6326790862719006    testing-metric, auc: 0.6987619341159336    testing-metric, eer: 0.3654643567168418    testing-metric, ap: 0.7034894744181643    testing-metric, video_auc: 0.715307831882449    testing-metric, acc_real:0.6715137744958819; acc_fake:0.5956571181025613
+2025-12-05 17:44:40,986 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\UADFV\data_dict_test.pickle
+2025-12-05 17:44:46,782 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\UADFV\ckpt_best.pth, current ckpt is 1+897
+2025-12-05 17:44:46,784 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\UADFV\metric_dict_best.pickle
+2025-12-05 17:44:46,785 - INFO - dataset: UADFV    step: 2693    testing-loss, overall: 0.3965737819671631    testing-loss, cls: 0.3965737819671631    
+2025-12-05 17:44:46,786 - INFO - dataset: UADFV    step: 2693    testing-metric, acc: 0.8469387755102041    testing-metric, auc: 0.9401030820491463    testing-metric, eer: 0.11479591836734694    testing-metric, ap: 0.9430000663969825    testing-metric, video_auc: 0.9725114535610162    testing-metric, acc_real:0.75; acc_fake:0.9438775510204082
+2025-12-05 17:44:46,946 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\avg\ckpt_best.pth, current ckpt is 1+897
+2025-12-05 17:44:46,948 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\avg\metric_dict_best.pickle
+2025-12-05 17:44:46,948 - INFO - dataset: avg    step: 2693    testing-metric, acc: 0.7264904742604319    testing-metric, auc: 0.7937426604786116    testing-metric, eer: 0.27058583749851933    testing-metric, ap: 0.8663757800574721    testing-metric, video_auc: 0.8255966703657655    
+2025-12-05 17:44:46,950 - INFO - ===> Test Done!
+2025-12-05 17:44:49,397 - INFO - Iter: 2696    training-loss, overall: 0.15200841426849365    training-loss, cls: 0.15200841426849365    
+2025-12-05 17:44:49,398 - INFO - Iter: 2696    training-metric, acc: 0.93609375    training-metric, auc: 0.9799411725303508    training-metric, eer: 0.07146602682526086    training-metric, ap: 0.9951572812018901    
+2025-12-05 17:48:55,572 - INFO - Iter: 2996    training-loss, overall: 0.14246518909931183    training-loss, cls: 0.14246518909931183    
+2025-12-05 17:48:55,574 - INFO - Iter: 2996    training-metric, acc: 0.9411979166666666    training-metric, auc: 0.983288344785462    training-metric, eer: 0.055421752582356244    training-metric, ap: 0.9957226901505336    
+2025-12-05 17:53:00,393 - INFO - Iter: 3296    training-loss, overall: 0.1398698389530182    training-loss, cls: 0.1398698389530182    
+2025-12-05 17:53:00,394 - INFO - Iter: 3296    training-metric, acc: 0.9423958333333333    training-metric, auc: 0.9828329331391531    training-metric, eer: 0.058994210568126954    training-metric, ap: 0.9956359986990126    
+2025-12-05 17:57:00,209 - INFO - ===> Test start!
+2025-12-05 17:57:00,211 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\FaceForensics++\data_dict_test.pickle
+2025-12-05 17:57:34,616 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\FaceForensics++\metric_dict_best.pickle
+2025-12-05 17:57:34,618 - INFO - dataset: FaceForensics++    step: 3591    testing-loss, overall: 0.17318254709243774    testing-loss, cls: 0.17318254709243774    
+2025-12-05 17:57:34,621 - INFO - dataset: FaceForensics++    step: 3591    testing-metric, acc: 0.93375    testing-metric, auc: 0.9772115154655612    testing-metric, eer: 0.06875    testing-metric, ap: 0.9944271344903679    testing-metric, video_auc: 0.9950510204081633    testing-metric, acc_real:0.7848214285714286; acc_fake:0.9709821428571429
+2025-12-05 17:57:34,639 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\data_dict_test.pickle
+2025-12-05 18:00:23,092 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\ckpt_best.pth, current ckpt is 1+1795
+2025-12-05 18:00:23,094 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\DeepFakeDetection\metric_dict_best.pickle
+2025-12-05 18:00:23,095 - INFO - dataset: DeepFakeDetection    step: 3591    testing-loss, overall: 0.6741665005683899    testing-loss, cls: 0.6741665005683899    
+2025-12-05 18:00:23,096 - INFO - dataset: DeepFakeDetection    step: 3591    testing-metric, acc: 0.774331079094384    testing-metric, auc: 0.816927470303976    testing-metric, eer: 0.25760719225449513    testing-metric, ap: 0.9732438474697853    testing-metric, video_auc: 0.8496654860291224    testing-metric, acc_real:0.6307053941908713; acc_fake:0.7914130613587761
+2025-12-05 18:00:23,097 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\data_dict_test.pickle
+2025-12-05 18:00:28,597 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\ckpt_best.pth, current ckpt is 1+1795
+2025-12-05 18:00:28,598 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v1\metric_dict_best.pickle
+2025-12-05 18:00:28,599 - INFO - dataset: Celeb-DF-v1    step: 3591    testing-loss, overall: 0.7163988947868347    testing-loss, cls: 0.7163988947868347    
+2025-12-05 18:00:28,601 - INFO - dataset: Celeb-DF-v1    step: 3591    testing-metric, acc: 0.72375    testing-metric, auc: 0.7906276528013582    testing-metric, eer: 0.27631578947368424    testing-metric, ap: 0.8786003688392765    testing-metric, video_auc: 0.8213073005093379    testing-metric, acc_real:0.6546052631578947; acc_fake:0.7661290322580645
+2025-12-05 18:00:28,603 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\data_dict_test.pickle
+2025-12-05 18:00:53,657 - INFO - Checkpoint saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\ckpt_best.pth, current ckpt is 1+1795
+2025-12-05 18:00:53,659 - INFO - Metrics saved to ./logs/training/xception_2025-12-05-16-52-12\test\Celeb-DF-v2\metric_dict_best.pickle
+2025-12-05 18:00:53,660 - INFO - dataset: Celeb-DF-v2    step: 3591    testing-loss, overall: 0.9153512120246887    testing-loss, cls: 0.9153512120246887    
+2025-12-05 18:00:53,662 - INFO - dataset: Celeb-DF-v2    step: 3591    testing-metric, acc: 0.6267214302971732    testing-metric, auc: 0.7135747004933051    testing-metric, eer: 0.36152219873150104    testing-metric, ap: 0.826347127298572    testing-metric, video_auc: 0.7459352280237938    testing-metric, acc_real:0.7237491190979564; acc_fake:0.5761029411764705
+2025-12-05 18:00:53,684 - INFO - data_dict saved to ./logs/training/xception_2025-12-05-16-52-12\test\DFDC\data_dict_test.pickle

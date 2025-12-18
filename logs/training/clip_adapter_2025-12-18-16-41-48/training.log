@@ -1,0 +1,120 @@
+2025-12-18 16:41:48,365 - INFO - Save log to ./logs/training/clip_adapter_2025-12-18-16-41-48
+2025-12-18 16:41:48,366 - INFO - --------------- Configuration ---------------
+2025-12-18 16:41:48,366 - INFO - Parameters: 
+log_dir: ./logs/training/
+model_name: clip_adapter
+backbone_name: vit
+backbone_config: {'mode': 'ln_tuning', 'num_classes': 2, 'inc': 3, 'dropout': False}
+all_dataset: ['FaceForensics++', 'FF-F2F', 'FF-DF', 'FF-FS', 'FF-NT', 'FaceShifter', 'DeepFakeDetection', 'Celeb-DF-v1', 'Celeb-DF-v2', 'DFDCP', 'DFDC', 'DeeperForensics-1.0', 'UADFV']
+train_dataset: ['FaceForensics++']
+test_dataset: ['FaceForensics++', 'DeepFakeDetection', 'Celeb-DF-v2', 'DFDC']
+compression: c23
+train_batchSize: 32
+test_batchSize: 32
+workers: 0
+frame_num: {'train': 32, 'test': 32}
+resolution: 224
+with_mask: False
+with_landmark: False
+use_data_augmentation: True
+data_aug: {'flip_prob': 0.5, 'rotate_prob': 0.5, 'rotate_limit': [-10, 10], 'blur_prob': 0.5, 'blur_limit': [3, 7], 'brightness_prob': 0.5, 'brightness_limit': [-0.1, 0.1], 'contrast_limit': [-0.1, 0.1], 'quality_lower': 40, 'quality_upper': 100, 'use_slerp': False, 'slerp_prob': 0.0}
+mean: [0.5, 0.5, 0.5]
+std: [0.5, 0.5, 0.5]
+optimizer: {'type': 'adam', 'adam': {'lr': 0.0002, 'beta1': 0.9, 'beta2': 0.999, 'eps': 1e-08, 'weight_decay': 0.0005, 'amsgrad': False}, 'sgd': {'lr': 0.0002, 'momentum': 0.9, 'weight_decay': 0.0005}}
+lr_scheduler: cosine
+lr_T_max: 10
+lr_eta_min: 1e-07
+nEpochs: 10
+start_epoch: 0
+save_epoch: 1
+rec_iter: 100
+logdir: ./logs
+manualSeed: 1024
+save_ckpt: True
+save_feat: False
+modules: {'use_freq_adapter': True, 'use_boundary_mining': True, 'use_identity_invariant': True}
+loss_func: cross_entropy
+aux_losses: {'use_angle': False, 'angle_weight': 0.1, 'use_alignment': False, 'alignment_weight': 0.1, 'use_freq_consistency': False, 'freq_consistency_weight': 0.1, 'use_adversarial_identity': False, 'adversarial_identity_weight': 0.1}
+metric_scoring: auc
+cuda: True
+cudnn: True
+mode: train
+lmdb: True
+dry_run: False
+rgb_dir: ./datasets/rgb
+lmdb_dir: ./datasets/lmdb
+dataset_json_folder: preprocessing/dataset_json
+SWA: False
+save_avg: True
+label_dict: {'DFD_fake': 1, 'DFD_real': 0, 'FF-SH': 1, 'FF-F2F': 1, 'FF-DF': 1, 'FF-FS': 1, 'FF-NT': 1, 'FF-FH': 1, 'FF-real': 0, 'CelebDFv1_real': 0, 'CelebDFv1_fake': 1, 'CelebDFv2_real': 0, 'CelebDFv2_fake': 1, 'DFDCP_Real': 0, 'DFDCP_FakeA': 1, 'DFDCP_FakeB': 1, 'DFDC_Fake': 1, 'DFDC_Real': 0, 'DF_fake': 1, 'DF_real': 0, 'UADFV_Fake': 1, 'UADFV_Real': 0, 'roop_Real': 0, 'roop_Fake': 1}
+local_rank: 0
+ddp: False
+
+2025-12-18 16:42:00,504 - INFO - ===> Epoch[0] start!
+2025-12-18 16:42:00,525 - INFO - data_dict saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\train\FaceForensics++\data_dict_train.pickle
+2025-12-18 16:42:04,347 - INFO - Iter: 0    training-loss, overall: 0.6690333485603333    
+2025-12-18 16:42:04,354 - INFO - Iter: 0    training-metric, acc: 0.78125    training-metric, auc: 0.5485714285714286    training-metric, eer: 0.5714285714285714    training-metric, ap: 0.8541576431338596    
+2025-12-18 16:43:14,657 - INFO - Iter: 300    training-loss, overall: 0.48421281576156616    
+2025-12-18 16:43:14,657 - INFO - Iter: 300    training-metric, acc: 0.7940625    training-metric, auc: 0.6861829819658354    training-metric, eer: 0.37175481000481025    training-metric, ap: 0.8976220806064121    
+2025-12-18 16:44:25,139 - INFO - Iter: 600    training-loss, overall: 0.44170188903808594    
+2025-12-18 16:44:25,139 - INFO - Iter: 600    training-metric, acc: 0.7982291666666667    training-metric, auc: 0.7546779354857919    training-metric, eer: 0.3099563399563402    training-metric, ap: 0.9254439770792845    
+2025-12-18 16:45:35,277 - INFO - Iter: 900    training-loss, overall: 0.42783254384994507    
+2025-12-18 16:45:35,278 - INFO - Iter: 900    training-metric, acc: 0.8082291666666667    training-metric, auc: 0.7615502964534998    training-metric, eer: 0.30138447579919164    training-metric, ap: 0.9302510182156926    
+2025-12-18 16:46:45,172 - INFO - Iter: 1200    training-loss, overall: 0.4176737368106842    
+2025-12-18 16:46:45,172 - INFO - Iter: 1200    training-metric, acc: 0.809375    training-metric, auc: 0.7791172790357841    training-metric, eer: 0.2905319402819405    training-metric, ap: 0.935251176643733    
+2025-12-18 16:47:55,747 - INFO - Iter: 1500    training-loss, overall: 0.413144588470459    
+2025-12-18 16:47:55,747 - INFO - Iter: 1500    training-metric, acc: 0.8088541666666667    training-metric, auc: 0.792279682495812    training-metric, eer: 0.2743210585710589    training-metric, ap: 0.9384989448669836    
+2025-12-18 16:49:04,117 - INFO - Iter: 1800    training-loss, overall: 0.40995562076568604    
+2025-12-18 16:49:04,118 - INFO - Iter: 1800    training-metric, acc: 0.8130208333333333    training-metric, auc: 0.7945592332344185    training-metric, eer: 0.27914272764272813    training-metric, ap: 0.9415807167360515    
+2025-12-18 16:50:13,168 - INFO - Iter: 2100    training-loss, overall: 0.4067990183830261    
+2025-12-18 16:50:13,168 - INFO - Iter: 2100    training-metric, acc: 0.8113541666666667    training-metric, auc: 0.7966592022954092    training-metric, eer: 0.28009821659821676    training-metric, ap: 0.9409696022227394    
+2025-12-18 16:51:22,352 - INFO - Iter: 2400    training-loss, overall: 0.40084779262542725    
+2025-12-18 16:51:22,352 - INFO - Iter: 2400    training-metric, acc: 0.8151041666666666    training-metric, auc: 0.80203668707405    training-metric, eer: 0.26713801013801053    training-metric, ap: 0.9440784247955982    
+2025-12-18 16:52:30,599 - INFO - Iter: 2700    training-loss, overall: 0.4034576117992401    
+2025-12-18 16:52:30,599 - INFO - Iter: 2700    training-metric, acc: 0.8144791666666666    training-metric, auc: 0.799163025273307    training-metric, eer: 0.2770475727975732    training-metric, ap: 0.9434582295454778    
+2025-12-18 16:53:38,200 - INFO - Iter: 3000    training-loss, overall: 0.4112412929534912    
+2025-12-18 16:53:38,201 - INFO - Iter: 3000    training-metric, acc: 0.8127083333333334    training-metric, auc: 0.7966516409161527    training-metric, eer: 0.276377122877123    training-metric, ap: 0.9398031212257778    
+2025-12-18 16:54:46,948 - INFO - Iter: 3300    training-loss, overall: 0.394396036863327    
+2025-12-18 16:54:46,948 - INFO - Iter: 3300    training-metric, acc: 0.8223958333333333    training-metric, auc: 0.8091997006796131    training-metric, eer: 0.2725193047693049    training-metric, ap: 0.9463872828921143    
+2025-12-18 16:55:51,707 - INFO - ===> Test start!
+2025-12-18 16:55:51,713 - INFO - data_dict saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\FaceForensics++\data_dict_test.pickle
+2025-12-18 16:57:57,903 - INFO - Metrics saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\FaceForensics++\metric_dict_best.pickle
+2025-12-18 16:57:57,906 - INFO - dataset: FaceForensics++    step: 3590    testing-loss, overall: 0.402748703956604    
+2025-12-18 16:57:57,914 - INFO - dataset: FaceForensics++    step: 3590    testing-metric, acc: 0.8082454886546364    testing-metric, auc: 0.8070559852393606    testing-metric, eer: 0.2761777182406787    testing-metric, ap: 0.9441394454825629    testing-metric, video_auc: 0.8715306122448979    testing-metric, acc_real:0.41527126590756863; acc_fake:0.9065274443017477
+2025-12-18 16:57:57,948 - INFO - data_dict saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\DeepFakeDetection\data_dict_test.pickle
+2025-12-18 17:07:39,897 - INFO - Checkpoint saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\DeepFakeDetection\ckpt_best.pth, current ckpt is 0+3590
+2025-12-18 17:07:39,900 - INFO - Metrics saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\DeepFakeDetection\metric_dict_best.pickle
+2025-12-18 17:07:39,903 - INFO - dataset: DeepFakeDetection    step: 3590    testing-loss, overall: 0.4249119162559509    
+2025-12-18 17:07:39,915 - INFO - dataset: DeepFakeDetection    step: 3590    testing-metric, acc: 0.7755442415730337    testing-metric, auc: 0.7762976900510463    testing-metric, eer: 0.29466530118238526    testing-metric, ap: 0.9672603058266168    testing-metric, video_auc: 0.8129704804673672    testing-metric, acc_real:0.5706172609626664; acc_fake:0.7995249871986229
+2025-12-18 17:07:39,920 - INFO - data_dict saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\Celeb-DF-v2\data_dict_test.pickle
+2025-12-18 17:09:15,828 - INFO - Checkpoint saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\Celeb-DF-v2\ckpt_best.pth, current ckpt is 0+3590
+2025-12-18 17:09:15,829 - INFO - Metrics saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\Celeb-DF-v2\metric_dict_best.pickle
+2025-12-18 17:09:15,831 - INFO - dataset: Celeb-DF-v2    step: 3590    testing-loss, overall: 0.6167953014373779    
+2025-12-18 17:09:15,840 - INFO - dataset: Celeb-DF-v2    step: 3590    testing-metric, acc: 0.6716199756394641    testing-metric, auc: 0.6681060036905232    testing-metric, eer: 0.38042704626334517    testing-metric, ap: 0.7823785420415906    testing-metric, video_auc: 0.6983311302048909    testing-metric, acc_real:0.4115658362989324; acc_fake:0.8069444444444445
+2025-12-18 17:09:15,864 - INFO - data_dict saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\DFDC\data_dict_test.pickle
+2025-12-18 17:21:33,518 - INFO - Checkpoint saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\DFDC\ckpt_best.pth, current ckpt is 0+3590
+2025-12-18 17:21:33,521 - INFO - Metrics saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\DFDC\metric_dict_best.pickle
+2025-12-18 17:21:33,524 - INFO - dataset: DFDC    step: 3590    testing-loss, overall: 0.6877284049987793    
+2025-12-18 17:21:33,534 - INFO - dataset: DFDC    step: 3590    testing-metric, acc: 0.6406869720548609    testing-metric, auc: 0.7045493966187742    testing-metric, eer: 0.34975104718248634    testing-metric, ap: 0.7229142427531724    testing-metric, video_auc: 0.722685418318481    testing-metric, acc_real:0.46864775152137833; acc_fake:0.7987683548532338
+2025-12-18 17:21:33,865 - INFO - Checkpoint saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\avg\ckpt_best.pth, current ckpt is 0+3590
+2025-12-18 17:21:33,866 - INFO - Metrics saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\test\avg\metric_dict_best.pickle
+2025-12-18 17:21:33,874 - INFO - dataset: avg    step: 3590    testing-metric, acc: 0.7240241694804987    testing-metric, auc: 0.7390022688999262    testing-metric, eer: 0.3252552782172239    testing-metric, ap: 0.8541731340259857    testing-metric, video_auc: 0.7763794103089092    
+2025-12-18 17:21:33,874 - INFO - ===> Test Done!
+2025-12-18 17:21:33,908 - INFO - ===> Epoch[0] end with testing auc: 
+================================ Each dataset best metric ================================ 
+| FaceForensics++:  auc=0.8070559852393606 | 
+| DeepFakeDetection:  auc=0.7762976900510463 | 
+| Celeb-DF-v2:  auc=0.6681060036905232 | 
+| DFDC:  auc=0.7045493966187742 | 
+============================================================================================= 
+================================== Average best metric ====================================== 
+| avg auc: 0.7390022688999262 | 
+| FaceForensics++: 0.8070559852393606 | 
+| DeepFakeDetection: 0.7762976900510463 | 
+| Celeb-DF-v2: 0.6681060036905232 | 
+| DFDC: 0.7045493966187742 | 
+=============================================================================================!
+2025-12-18 17:21:33,908 - INFO - ===> Epoch[1] start!
+2025-12-18 17:21:33,936 - INFO - data_dict saved to ./logs/training/clip_adapter_2025-12-18-16-41-48\train\FaceForensics++\data_dict_train.pickle
+2025-12-18 17:21:34,153 - INFO - Iter: 3591    training-loss, overall: 0.4658832550048828    
+2025-12-18 17:21:34,153 - INFO - Iter: 3591    training-metric, acc: 0.71875    training-metric, auc: 0.7257142857142858    training-metric, eer: 0.42857142857142855    training-metric, ap: 0.919979199053487    

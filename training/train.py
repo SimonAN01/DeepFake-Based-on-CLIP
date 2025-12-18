@@ -38,7 +38,7 @@ from logger import create_logger, RankFilter
 
 parser = argparse.ArgumentParser(description='Process some paths.')
 parser.add_argument('--detector_path', type=str,
-                    default='/data/home/zhiyuanyan/DeepfakeBenchv2/training/config/detector/sbi.yaml',
+                    default= './training/config/detector/xception.yaml',
                     help='path to detector YAML file')
 parser.add_argument("--train_dataset", nargs="+")
 parser.add_argument("--test_dataset", nargs="+")
@@ -56,8 +56,8 @@ def init_seed(config):
         config['manualSeed'] = random.randint(1, 10000)
     random.seed(config['manualSeed'])
     if config['cuda']:
-        torch.manual_seed(config['manualSeed'])
-        torch.cuda.manual_seed_all(config['manualSeed'])
+        torch.manual_seed(config['manualSeed']) # 设置 PyTorch 的随机数种子（CPU 侧），让如参数初始化、随机张量、Dropout 掩码等在同一种子下可复现
+        torch.cuda.manual_seed_all(config['manualSeed']) # 为所有可见的 CUDA 设备设置随机数种子，确保多卡训练时各 GPU 的随机行为一致。
 
 
 def prepare_training_data(config):

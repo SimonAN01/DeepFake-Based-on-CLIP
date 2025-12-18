@@ -1,43 +1,71 @@
-mode: train
-lmdb: True
-dry_run: false
-rgb_dir: './datasets/rgb'
-lmdb_dir:  './datasets/lmdb'
-dataset_json_folder: './preprocessing/dataset_json'
-SWA: False
-save_avg: True
-log_dir: ./logs/training/
-# label settings
+# =============================================================================
+# DeepfakeBench 训练配置文件详解
+# =============================================================================
+
+# 训练模式设置
+mode: train  # 运行模式：train(训练) 或 test(测试)
+
+# 数据存储格式选择
+lmdb: True  # 是否使用LMDB数据库格式存储数据，True=使用LMDB(更快)，False=使用RGB图片文件
+
+# 调试模式
+dry_run: false  # 是否为干运行模式，True=只运行一个epoch用于调试，False=正常训练
+
+# 数据路径配置
+rgb_dir: './datasets/rgb'  # RGB图片格式数据的根目录路径
+lmdb_dir:  './datasets/lmdb'  # LMDB数据库格式数据的根目录路径
+dataset_json_folder: './preprocessing/dataset_json'  # 数据集JSON配置文件的存放目录
+
+# 模型训练策略
+SWA: False  # 是否使用随机权重平均(Stochastic Weight Averaging)，用于提升模型泛化能力
+save_avg: True  # 是否保存所有测试数据集的平均指标
+
+# 日志和输出配置
+log_dir: ./logs/training/  # 训练日志和模型检查点的保存目录
+
+# =============================================================================
+# 标签映射字典 - 定义各数据集中真实/伪造视频的标签
+# 0 = 真实视频，1 = 伪造视频
+# =============================================================================
 label_dict:
-  # DFD
-  DFD_fake: 1
-  DFD_real: 0
-  # FF++ + FaceShifter(FF-real+FF-FH)
-  FF-SH: 1
-  FF-F2F: 1
-  FF-DF: 1
-  FF-FS: 1
-  FF-NT: 1
-  FF-FH: 1
-  FF-real: 0
-  # CelebDF
-  CelebDFv1_real: 0
-  CelebDFv1_fake: 1
-  CelebDFv2_real: 0
-  CelebDFv2_fake: 1
-  # DFDCP
-  DFDCP_Real: 0
-  DFDCP_FakeA: 1
-  DFDCP_FakeB: 1
-  # DFDC
-  DFDC_Fake: 1
-  DFDC_Real: 0
-  # DeeperForensics-1.0
-  DF_fake: 1
-  DF_real: 0
-  # UADFV
-  UADFV_Fake: 1
-  UADFV_Real: 0
-  # Roop
-  roop_Real: 0
-  roop_Fake: 1
+  # DeepFakeDetection数据集标签
+  DFD_fake: 1  # DeepFakeDetection数据集中的伪造视频标签
+  DFD_real: 0  # DeepFakeDetection数据集中的真实视频标签
+  
+  # FaceForensics++数据集及其子集标签
+  FF-SH: 1  # FaceShifter方法生成的伪造视频
+  FF-F2F: 1  # Face2Face方法生成的伪造视频
+  FF-DF: 1  # DeepFakes方法生成的伪造视频
+  FF-FS: 1  # FaceSwap方法生成的伪造视频
+  FF-NT: 1  # NeuralTextures方法生成的伪造视频
+  FF-FH: 1  # FaceShifter方法生成的伪造视频(与FF-SH相同)
+  FF-real: 0  # FaceForensics++数据集中的真实视频
+  
+  # Celeb-DF数据集标签
+  CelebDFv1_real: 0  # Celeb-DF-v1数据集中的真实视频
+  CelebDFv1_fake: 1  # Celeb-DF-v1数据集中的伪造视频
+  CelebDFv2_real: 0  # Celeb-DF-v2数据集中的真实视频
+  CelebDFv2_fake: 1  # Celeb-DF-v2数据集中的伪造视频
+  
+  # Deepfake Detection Challenge Preview数据集标签
+  DFDCP_Real: 0  # DFDCP数据集中的真实视频
+  DFDCP_FakeA: 1  # DFDCP数据集中的伪造视频类型A
+  DFDCP_FakeB: 1  # DFDCP数据集中的伪造视频类型B
+  
+  # Deepfake Detection Challenge数据集标签
+  DFDC_Fake: 1  # DFDC数据集中的伪造视频
+  DFDC_Real: 0  # DFDC数据集中的真实视频
+  
+  # DeeperForensics-1.0数据集标签
+  DF_fake: 1  # DeeperForensics-1.0数据集中的伪造视频
+  DF_real: 0  # DeeperForensics-1.0数据集中的真实视频
+  
+  # UADFV数据集标签
+  UADFV_Fake: 1  # UADFV数据集中的伪造视频
+  UADFV_Real: 0  # UADFV数据集中的真实视频
+  
+  # Roop数据集标签(新增的深度伪造方法)
+  roop_Real: 0  # Roop方法生成的真实视频
+  roop_Fake: 1  # Roop方法生成的伪造视频
+
+  times_per_epoch: 1   # 每个 epoch 测试几次，1 就是“训完一遍再测一次”

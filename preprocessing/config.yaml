@@ -1,52 +1,80 @@
-preprocess:
-  dataset_name: # the name of dataset
-    choices: ['FaceForensics++','Celeb-DF-v1', 'Celeb-DF-v2', 'DFDCP', 'DFDC', 'DeeperForensics-1.0','UADFV']
-    default: 'FaceForensics++'
-  dataset_root_path: # the root path to the dataset
-    type: str
-    default: 'F:\'
-  comp: # the compression level of videos, only in the dataset of FaceForensics++.
-    choices: ['raw', 'c23', 'c40']
-    default: 'c23'
-  mode: # based on the numbers of frame or skip the specific stride of frames.
-    choices: ['fixed_num_frames', 'fixed_stride']
-    default: 'fixed_num_frames'
-  stride: # when 'mode' is 'fixed_stride', 'stride' is the number of frames to skip between each frame extracted.
-    type: int
-    default: 10
-  num_frames: # when 'mode' is 'fixed_num_frames', 'num_frames' is the number of frames to extract from each video.
-    type: int
-    default: 32
+# =============================================================================
+# DeepfakeBench 数据预处理配置文件详解
+# =============================================================================
 
+# =============================================================================
+# 第一阶段：数据预处理配置 (preprocess)
+# 功能：从原始视频中提取人脸帧、关键点和掩码
+# =============================================================================
+preprocess:
+  dataset_name: # 数据集名称 - 指定要预处理的数据集
+    choices: ['FaceForensics++','Celeb-DF-v1', 'Celeb-DF-v2', 'DFDCP', 'DFDC', 'DeeperForensics-1.0','UADFV']
+    default: 'FaceForensics++'  # 默认使用FaceForensics++数据集
+  
+  dataset_root_path: # 数据集根目录路径 - 原始视频文件的存放位置
+    type: str
+    default: 'F:\'  # 默认路径为F盘根目录
+  
+  comp: # 视频压缩级别 - 仅适用于FaceForensics++数据集
+    choices: ['raw', 'c23', 'c40']  # raw=无损压缩, c23=中等压缩, c40=高压缩
+    default: 'c23'  # 默认使用c23压缩级别
+  
+  mode: # 帧提取模式 - 基于帧数量或固定步长提取帧
+    choices: ['fixed_num_frames', 'fixed_stride']
+    default: 'fixed_num_frames'  # 默认按固定帧数提取
+  
+  stride: # 帧步长 - 当mode为'fixed_stride'时，每提取一帧跳过的帧数
+    type: int
+    default: 10  # 默认每10帧提取1帧
+  
+  num_frames: # 提取帧数 - 当mode为'fixed_num_frames'时，从每个视频提取的帧数
+    type: int
+    default: 32  # 默认每个视频提取32帧
+
+# =============================================================================
+# 第二阶段：数据重排配置 (rearrange)
+# 功能：将预处理后的数据重新组织成统一的JSON格式
+# =============================================================================
 rearrange:
-  dataset_name: # the name of dataset
+  dataset_name: # 数据集名称 - 指定要重排的数据集
     choices: ['FaceForensics++', 'DeepFakeDetection', 'Celeb-DF-v1', 'Celeb-DF-v2','DFDCP', 'DFDC', 'DeeperForensics-1.0','UADFV','FaceShifter']
-    default: 'FaceForensics++'
-  dataset_root_path: # the root path to the dataset
+    default: 'FaceForensics++'  # 默认使用FaceForensics++数据集
+  
+  dataset_root_path: # 数据集根目录路径 - 预处理后数据的存放位置
     type: str
-    default: ''
-  output_file_path: # the json path to the dataset
+    default: ''  # 默认为空，使用预处理阶段的路径
+  
+  output_file_path: # JSON输出文件路径 - 生成的JSON配置文件的保存位置
     type: str
-    default: '../preprocessing/dataset_json_v6'
-  comp: # the compression level of videos, only in the dataset of FaceForensics++.
-    choices: ['raw', 'c23', 'c40']
-    default: 'c23'
-  perturbation: # Extensive real-world perturbations are applied to DeeperForensics-1.0 dataset
+    default: '../preprocessing/dataset_json_v6'  # 默认保存到dataset_json_v6目录
+  
+  comp: # 视频压缩级别 - 仅适用于FaceForensics++数据集
+    choices: ['raw', 'c23', 'c40']  # raw=无损压缩, c23=中等压缩, c40=高压缩
+    default: 'c23'  # 默认使用c23压缩级别
+  
+  perturbation: # 扰动类型 - DeeperForensics-1.0数据集应用的真实世界扰动类型
     choices: ['end_to_end','end_to_end_level_1','end_to_end_level_2','end_to_end_level_3','end_to_end_level_4',
               'end_to_end_level_5','end_to_end_mix_2_distortions','end_to_end_mix_3_distortions',
               'end_to_end_mix_4_distortions','end_to_end_random_level','reenact_postprocess']
-    default: 'end_to_end'
+    default: 'end_to_end'  # 默认使用端到端扰动
 
+# =============================================================================
+# 第三阶段：LMDB转换配置 (to_lmdb)
+# 功能：将RGB图片格式数据转换为LMDB数据库格式，提升读取速度
+# =============================================================================
 to_lmdb:
-  dataset_name: # the name of dataset
+  dataset_name: # 数据集名称 - 指定要转换为LMDB的数据集
     choices: ['FaceForensics++', 'DeepFakeDetection', 'Celeb-DF-v1', 'Celeb-DF-v2','DFDCP', 'DFDC', 'DeeperForensics-1.0','UADFV','FaceShifter']
-    default: 'FaceForensics++'
-  dataset_root_path: # the root path to the dataset
+    default: 'FaceForensics++'  # 默认使用FaceForensics++数据集
+  
+  dataset_root_path: # 数据集根目录路径 - RGB格式数据的存放位置
     type: str
-    default: './datasets_v2'
-  output_lmdb_dir: # the json path to the dataset
+    default: './datasets_v2'  # 默认使用datasets_v2目录
+  
+  output_lmdb_dir: # LMDB输出目录 - 生成的LMDB数据库文件的保存位置
     type: str
-    default: './datasets_lmdbs'
-  comp: # the compression level of videos, only in the dataset of FaceForensics++.
-    choices: ['raw', 'c23', 'c40']
-    default: 'c23'
+    default: './datasets_lmdbs'  # 默认保存到datasets_lmdbs目录
+  
+  comp: # 视频压缩级别 - 仅适用于FaceForensics++数据集
+    choices: ['raw', 'c23', 'c40']  # raw=无损压缩, c23=中等压缩, c40=高压缩
+    default: 'c23'  # 默认使用c23压缩级别

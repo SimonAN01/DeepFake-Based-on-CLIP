@@ -223,10 +223,11 @@ class Trainer(object):
         else:
             times_per_epoch = 1
 
+        times_per_epoch = self.config.get('times_per_epoch', 1)
 
         #times_per_epoch=4
 
-        test_step = len(train_data_loader) // times_per_epoch    # test 10 times per epoch
+        test_step = len(train_data_loader) // max(times_per_epoch, 1)    # test 10 times per epoch
         step_cnt = epoch * len(train_data_loader)
 
         # save the training data_dict
@@ -345,7 +346,8 @@ class Trainer(object):
         prediction_lists = []
         feature_lists=[]
         label_lists = []
-        for i, data_dict in tqdm(enumerate(data_loader),total=len(data_loader)):
+        # 测试阶段不再使用 tqdm 进度条，避免在控制台打印多行进度信息
+        for i, data_dict in enumerate(data_loader):
             # get data
             if 'label_spe' in data_dict:
                 data_dict.pop('label_spe')  # remove the specific label

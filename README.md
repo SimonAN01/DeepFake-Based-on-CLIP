@@ -1,22 +1,19 @@
-# CLIP-Based Cross-Domain Deepfake Detection: A Comprehensive Framework
+# DeepfakeBench: A Comprehensive Benchmark of Deepfake Detection (NeurIPS 2023 D&B)
 
-[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-brightgreen.svg)](https://creativecommons.org/licenses/by-nc/4.0/) ![PyTorch](https://img.shields.io/badge/PyTorch-1.11-brightgreen) ![Python](https://img.shields.io/badge/Python-3.7.2-brightgreen) ![CLIP](https://img.shields.io/badge/CLIP-ViT-brightgreen)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-brightgreen.svg)](https://creativecommons.org/licenses/by-nc/4.0/) ![Release .10](https://img.shields.io/badge/Release-1.0-brightgreen) ![PyTorch](https://img.shields.io/badge/PyTorch-1.11-brightgreen) ![Python](https://img.shields.io/badge/Python-3.7.2-brightgreen)
 
-<b> Research Focus: Cross-Domain Deepfake Detection using CLIP Visual Representations </b>
+<b> Authors: <a href='https://yzy-stack.github.io/'>Zhiyuan Yan</a>, <a href='https://yzhang2016.github.io/'>Yong Zhang</a>, Xinhang Yuan, <a href='https://cse.buffalo.edu/~siweilyu/'>Siwei Lyu</a>, <a href='https://sites.google.com/site/baoyuanwu2015/'>Baoyuan Wu* </a>  </b>
 
-基于CLIP视觉表征的帧级跨域人脸伪造检测方法研究
+[[paper](https://arxiv.org/abs/2307.01426)] [[pre-trained weights](https://github.com/SCLBD/DeepfakeBench/releases/tag/v1.0.1)]
 
 
 
->  🚀 **Key Innovations:**
+>  ❗️❗️❗️ **News:**
+> 1. **LATEST DETECTOR**: Our **most powerful model** ([paper](https://arxiv.org/abs/2411.15633)) has been accepted by **ICML 25 Spotlight** ⭐. We propose a highly generalizable and efficient detection method that can be used to **detect both face deepfake images and synthetic images** (not limited to face). We have released the [code](https://github.com/YZY-stack/Effort-AIGI-Detection) based on the DeepfakeBench codebase.
 > 
-> 1. **Freq-Adapter**: FFT/DWT高频支路并联融合，增强频域特征表示
-> 
-> 2. **Boundary Mining**: 高通残差+边缘算子生成软权重W，用于加权特征融合
-> 
-> 3. **Identity-Invariant**: CLS上接身份判别器+GRL对抗抑制身份信息
-> 
-> 4. **Cross-Domain Robustness**: 在Celeb-DFv2/DFDC/DFD/FFIW/DSv1等数据集上验证泛化能力
+> 2. **NEW DATASET**: We are excited to introduce our **brand-new deepfake dataset** called DF40, comprising **40 distinct deepfake techniques, even the just released SoTAs**. DF40 is designed for seamless integration into the workflow of DeepfakeBench, allowing you to train or test just as you would with other datasets like Celeb-DF and FF++. Please refer to [DF40 dataset](https://github.com/YZY-stack/DF40) for details.
+>    
+> 3. The pre-trained weights of 3D R50 for training I3D, FTCN, and AltFreezing are [here](https://github.com/SCLBD/DeepfakeBench/releases/download/v1.0.3/I3D_8x8_R50.pth)
 
 
 
@@ -28,95 +25,69 @@
   <img src="figures/archi.png" style="max-width:60%;">
 </div>
 
-Welcome to *CLIP-Based Cross-Domain Deepfake Detection*, your comprehensive solution for robust deepfake detection across different domains! Here are the key features of our framework:
+Welcome to *DeepfakeBench*, your one-stop solution for deepfake detection! Here are some key features of our platform:
 
-> ✅ **CLIP Visual Foundation**: Leveraging pre-trained CLIP ViT backbone with frozen parameters for robust visual representations
+> ✅ **Unified Platform**: *DeepfakeBench* presents the first comprehensive benchmark for deepfake detection, resolving the issue of lack of standardization and uniformity in this field.
 > 
-> ✅ **Frequency Enhancement**: Freq-Adapter module with FFT/DWT parallel branches for enhanced frequency domain features
+> ✅ **Data Management**: *DeepfakeBench* provides a unified data management system that ensures consistent input across all detection models.
 > 
-> ✅ **Boundary-Aware Mining**: Soft weight generation through high-pass residuals and edge operators for adaptive feature fusion
+> ✅ **Integrated Framework**: *DeepfakeBench* offers an integrated framework for the implementation of state-of-the-art detection methods.
 > 
-> ✅ **Identity-Invariant Learning**: Adversarial training with GRL to suppress identity-specific information
+> ✅ **Standardized Evaluations**: *DeepfakeBench* introduces standardized evaluation metrics and protocols to enhance the transparency and reproducibility of performance evaluations.
 > 
-> ✅ **Cross-Domain Generalization**: Comprehensive evaluation across multiple datasets (Celeb-DFv2, DFDC, DFD, FFIW, DSv1)
-> 
-> ✅ **Robustness Analysis**: Testing under compression, noise, blur, and resolution variations
+> ✅ **Extensive Analysis and Insights**: *DeepfakeBench* facilitates an extensive analysis from various perspectives, providing new insights to inspire the development of new technologies.
 
 
 ---
 
 
 
->  🎯 **Research Methodology:**
+>  😊 **DeepfakeBench-v2 Updates:**
 > 
-> 1. **Data & Preprocessing**: FF++ training; Celeb-DFv2/DFDC/DFD/FFIW/DSv1 cross-domain testing; face detection-alignment-cropping; frame-level sampling and augmentation
+> 1. **36 Detectors are supported**: *DeepfakeBench*, currently, supports a total of **36** detection methods (28 image detectors + 8 video detectors).
 > 
-> 2. **Baseline Setup**: Load CLIP ViT (frozen backbone), LN-tuning + lightweight binary classification head; L2 normalization to hypersphere
+> 2. **More SoTA detectors are added**: We have implemented more **SoTA and latest** detectors, including: *Effort (ICML'25 spotlight), LSDA (CVPR'24), AltFreezing (CVPR'23), TALL (ICCV'23), IID (CVPR'23), SBI (CVPR'22), SLADD (CVPR'22), FTCN (ICCV'21), etc.*
 > 
-> 3. **Three Key Innovations**: Freq-Adapter, Boundary Mining, Identity-Invariant modules
+> 3. **Data Preprocessing**: *DeepfakeBench* currently provides **LMDB** for more faster and effective IO.
 > 
-> 4. **Loss & Training**: CE/ArcMargin + Alignment/Uniformity metrics + frequency consistency + adversarial loss; Slerp feature augmentation
-> 
-> 5. **Evaluation & Robustness**: Frame AUC, EER, TNR@TPR; stability under compression, noise, blur, resolution changes
-> 
-> 6. **Ablation & Comparison**: Component-wise removal analysis; comparison with Xception/linear CLIP baselines; parameter count and speed analysis
-> 
-> 7. **Interpretability & Reproducibility**: t-SNE/Grad-CAM visualization; organized code and configs; one-click reproduction scripts
+> 4. **Multi-GPUs Training**: *DeepfakeBench* offers **DDP** for multiple GPUs training.
+>
+> 5. **Integrated Framework**: *DeepfakeBench* offers an integrated framework, including training, data loading, and evaluation at both the image and video levels.
+>
+> 6. **More Evaluation Metrics**: *DeepfakeBench* facilitates a more comprehensive evaluation by including the following metrics: frame-level AUC, video-level AUC, ACC (fake and real), EER, PR, and AP.
 
 ---
 
 <font size=4><b> Table of Contents </b></font>
 
-- [Methodology](#-methodology)
-- [Architecture](#-architecture)
+- [Features](#-features)
 - [Quick Start](#-quick-start)
   - [Installation](#1-installation)
-  - [Data Preparation](#2-data-preparation)
-  - [Training](#3-training)
-  - [Evaluation](#4-evaluation)
-- [Key Components](#-key-components)
+  - [Download Data](#2-download-data)
+  - [Preprocessing (optional)](#3-preprocessing-optional)
+  - [Rearrangement](#4-rearrangement)
+  - [Training (optional)](#4-training-optional)
+  - [Evaluation](#5-evaluation)
+- [Supported Detectors](#-supported-detectors)
 - [Results](#-results)
-- [Ablation Studies](#-ablation-studies)
 - [Citation](#-citation)
-- [License](#%EF%B8%8F-license)
+- [Copyright](#%EF%B8%8F-license)
 
 ---
 
 
-## 📚 Methodology
+## 📚 Features
 <a href="#top">[Back to top]</a>
 
-Our CLIP-based cross-domain deepfake detection framework consists of seven key components:
+DeepfakeBench has the following features:
 
-### 1. Data & Preprocessing
-- **Training Dataset**: FaceForensics++ (FF++)
-- **Cross-Domain Testing**: Celeb-DFv2, DFDC, DFD, FFIW, DSv1
-- **Preprocessing Pipeline**: Face detection → alignment → cropping
-- **Frame-Level Processing**: Sampling and data augmentation
+⭐️  **Detectors** (**36** detectors):
+  - 5 Naive Detectors: [Xception](./training/detectors/xception_detector.py), [MesoNet](./training/detectors/meso4_detector.py), [MesoInception](./training/detectors/meso4Inception_detector.py), [CNN-Aug](./training/detectors/resnet34_detector.py), [EfficientNet-B4](./training/detectors/efficientnetb4_detector.py)
+  - 20 Spatial Detectors: [Capsule](./training/detectors/capsule_net_detector.py), [DSP-FWA](./training/detectors/fwa_detector.py), [Face X-ray](./training/detectors/facexray_detector.py), [FFD](./training/detectors/ffd_detector.py), [CORE](./training/detectors/core_detector.py), [RECCE](./training/detectors/recce_detector.py), [UCF](./training/detectors/ucf_detector.py), [Local-relation](./training/detectors/lrl_detector.py), [IID](./training/detectors/lrl_detector.py), [RFM](./training/detectors/rfm_detector.py), [SIA](./training/detectors/sia_detector.py), [SLADD](./training/detectors/sladd_detector.py), [UIA-ViT](./training/detectors/uia_vit_detector.py), [CLIP](./training/detectors/clip_detector.py), [SBI](./training/detectors/sbi_detector.py), [PCL-I2G](./training/detectors/pcl_xception_detector.py), [Multi-Attention](./training/detectors/multi_attention_detector.py), [LSDA](./training/detectors/lsda_detector.py), [Effort](./training/detectors/effort_detector.py)
+  - 3 Frequency Detectors: [F3Net](./training/detectors/f3net_detector.py), [SPSL](./training/detectors/spsl_detector.py), [SRM](./training/detectors/srm_detector.py)
+  - 8 Video Detectors: [TALL](./training/detectors/tall_detector.py), [I3D](./training/detectors/i3d_detector.py), [STIL](./training/detectors/stil_detector.py), [FTCN](./training/detectors/ftcn_detector.py), [X-CLIP](./training/detectors/xclip_detector.py), [TimeTransformer](./training/detectors/timesformer_detector.py), [VideoMAE](./training/detectors/videomae_detector.py)
 
-### 2. Baseline Architecture
-- **Backbone**: CLIP ViT (frozen parameters)
-- **Fine-tuning**: LayerNorm tuning + lightweight binary classification head
-- **Feature Normalization**: L2 normalization to hypersphere
-
-### 3. Three Key Innovations
-
-#### 🔄 Freq-Adapter
-- **FFT Branch**: Fast Fourier Transform for frequency domain analysis
-- **DWT Branch**: Discrete Wavelet Transform for multi-scale frequency features
-- **Parallel Fusion**: Concatenated frequency features for enhanced representation
-
-#### 🎯 Boundary Mining
-- **High-Pass Residuals**: Extract high-frequency components
-- **Edge Operators**: Sobel/Canny edge detection
-- **Soft Weight Generation**: Adaptive weighting mechanism W for feature fusion
-
-#### 🛡️ Identity-Invariant Learning
-- **Identity Discriminator**: Auxiliary classifier on CLS token
-- **GRL (Gradient Reversal Layer)**: Adversarial training to suppress identity information
-- **Domain Adaptation**: Cross-domain generalization enhancement
-
-### 4. Loss Functions & Training Strategy
+The table below highlights the **update** new detectors compared to our original DeepfakeBench version.
 
 |                  | File name                               | Paper                                                                                                                                                                                                                                                                                                                                                         |
 |------------------|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -142,43 +113,11 @@ Our CLIP-based cross-domain deepfake detection framework consists of seven key c
 
 ⭐️ **Datasets** (9 datasets): [FaceForensics++](https://github.com/ondyari/FaceForensics), [FaceShifter](https://github.com/ondyari/FaceForensics/tree/master/dataset), [DeepfakeDetection](https://github.com/ondyari/FaceForensics/tree/master/dataset), [Deepfake Detection Challenge (Preview)](https://ai.facebook.com/datasets/dfdc/), [Deepfake Detection Challenge](https://www.kaggle.com/c/deepfake-detection-challenge/data), [Celeb-DF-v1](https://github.com/yuezunli/celeb-deepfakeforensics/tree/master/Celeb-DF-v1), [Celeb-DF-v2](https://github.com/yuezunli/celeb-deepfakeforensics), [DeepForensics-1.0](https://github.com/EndlessSora/DeeperForensics-1.0/tree/master/dataset), [UADFV](https://docs.google.com/forms/d/e/1FAIpQLScKPoOv15TIZ9Mn0nGScIVgKRM9tFWOmjh9eHKx57Yp-XcnxA/viewform)
 
-## 🏗️ Architecture
-<a href="#top">[Back to top]</a>
+DeepfakeBench will be continuously updated to track the latest advances in deepfake detection.
+The implementation of more detection methods, as well as their evaluations, are on the way. **You are welcome to contribute your detection methods to DeepfakeBench.**
 
-Our CLIP-based cross-domain deepfake detection framework integrates three key innovations:
 
-### Overall Architecture
-```
-Input Image → CLIP ViT (Frozen) → Feature Extraction
-     ↓
-Freq-Adapter (FFT/DWT) → Frequency Features
-     ↓
-Boundary Mining → Soft Weights W
-     ↓
-Feature Fusion → L2 Normalization → Binary Classifier
-     ↓
-Identity Discriminator + GRL → Identity-Invariant Learning
-```
-
-### Key Components
-
-#### 🔄 Freq-Adapter Module
-- **FFT Branch**: Extracts frequency domain features using Fast Fourier Transform
-- **DWT Branch**: Multi-scale frequency analysis via Discrete Wavelet Transform
-- **Parallel Processing**: Both branches process input simultaneously
-- **Feature Concatenation**: Combined frequency features for enhanced representation
-
-#### 🎯 Boundary Mining Module
-- **High-Pass Filtering**: Extracts high-frequency residual components
-- **Edge Detection**: Sobel/Canny operators for boundary information
-- **Weight Generation**: Soft attention weights W for adaptive feature fusion
-- **Adaptive Fusion**: Dynamic weighting based on boundary characteristics
-
-#### 🛡️ Identity-Invariant Module
-- **Identity Discriminator**: Auxiliary classifier on CLS token
-- **GRL Integration**: Gradient Reversal Layer for adversarial training
-- **Domain Adaptation**: Cross-domain generalization enhancement
-- **Feature Disentanglement**: Separates identity-specific and forgery-specific features
+## ⏳ Quick Start
 
 ### 1. Installation
 (option 1) You can run the following script to configure the necessary environment:
@@ -186,17 +125,18 @@ Identity Discriminator + GRL → Identity-Invariant Learning
 ```
 git clone git@github.com:SCLBD/DeepfakeBench.git
 cd DeepfakeBench
-conda create -n CLIPDeepfake python=3.7.2
-conda activate CLIPDeepfake
+conda create -n DeepfakeBench python=3.7.2
+conda activate DeepfakeBench
 sh install.sh
 ```
 
-(option 2) You can also utilize the supplied [`Dockerfile`](./Dockerfile) to set up the entire environment using Docker:
+(option 2) You can also utilize the supplied [`Dockerfile`](./Dockerfile) to set up the entire environment using Docker. This will allow you to execute all the codes in the benchmark without encountering any environment-related problems. Simply run the following commands to enter the Docker environment.
 
 ```
-docker build -t CLIPDeepfake .
-docker run --gpus all -itd -v /path/to/this/repository:/app/ --shm-size 64G CLIPDeepfake
+docker build -t DeepfakeBench .
+docker run --gpus all -itd -v /path/to/this/repository:/app/ --shm-size 64G DeepfakeBench
 ```
+Note we used Docker version `19.03.14` in our setup. We highly recommend using this version for consistency, but later versions of Docker may also be compatible.
 
 ### 2. Download Data
 
