@@ -223,11 +223,11 @@ def choose_metric(config):
 
 def main():
     # parse options and load config
-    with open(args.detector_path, 'r') as f:
+    with open(args.detector_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
 
 
-    with open('./training/config/train_config.yaml', 'r') as f:
+    with open('./training/config/train_config.yaml', 'r', encoding='utf-8') as f:
         config2 = yaml.safe_load(f)
     if 'label_dict' in config:
         config2['label_dict']=config['label_dict']
@@ -258,6 +258,19 @@ def main():
     config['ddp']= args.ddp
     # print configuration
     logger.info("--------------- Configuration ---------------")
+    # Log LMDB status prominently
+    lmdb_status = config.get('lmdb', False)
+    lmdb_dir = config.get('lmdb_dir', './datasets/lmdb')
+    logger.info(f"=== Data Loading Format: {'LMDB' if lmdb_status else 'RGB'} ===")
+    if lmdb_status:
+        logger.info(f"LMDB directory: {lmdb_dir}")
+        if not os.path.exists(lmdb_dir):
+            logger.warning(f"LMDB directory does not exist: {lmdb_dir}. Please ensure LMDB databases are created.")
+        else:
+            logger.info(f"LMDB directory exists: {lmdb_dir}")
+    else:
+        rgb_dir = config.get('rgb_dir', './datasets/rgb')
+        logger.info(f"RGB directory: {rgb_dir}")
     params_string = "Parameters: \n"
     for key, value in config.items():
         params_string += "{}: {}".format(key, value) + "\n"
@@ -285,6 +298,64 @@ def main():
     # prepare the model (detector)
     model_class = DETECTOR[config['model_name']]
     model = model_class(config)
+
+    # --- Log model/backbone parameter statistics (total / trainable) ---
+    try:
+        # compute counts
+        total_params = sum(p.numel() for p in model.parameters())
+        trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        # compute sizes in bytes -> MB
+        total_bytes = sum(p.element_size() * p.numel() for p in model.parameters())
+        trainable_bytes = sum(p.element_size() * p.numel() for p in model.parameters() if p.requires_grad)
+        total_mb = total_bytes / (1024.0 ** 2)
+        trainable_mb = trainable_bytes / (1024.0 ** 2)
+        pct_model = 100.0 * trainable_params / total_params if total_params > 0 else 0.0
+        logger.info(
+            f"Model parameters: total={total_params:,} ({total_mb:.2f} MB), "
+            f"trainable={trainable_params:,} ({trainable_mb:.2f} MB) "
+            f"({pct_model:.4f}%)"
+        )
+
+        # If model exposes a backbone, print backbone-level stats and a short per-module summary (counts + MB)
+        if hasattr(model, 'backbone'):
+            try:
+                total_backbone = sum(p.numel() for p in model.backbone.parameters())
+                trainable_backbone = sum(p.numel() for p in model.backbone.parameters() if p.requires_grad)
+                total_backbone_bytes = sum(p.element_size() * p.numel() for p in model.backbone.parameters())
+                trainable_backbone_bytes = sum(p.element_size() * p.numel() for p in model.backbone.parameters() if p.requires_grad)
+                total_backbone_mb = total_backbone_bytes / (1024.0 ** 2)
+                trainable_backbone_mb = trainable_backbone_bytes / (1024.0 ** 2)
+                pct_backbone = 100.0 * trainable_backbone / total_backbone if total_backbone > 0 else 0.0
+                logger.info(
+                    f"Backbone parameters: total={total_backbone:,} ({total_backbone_mb:.2f} MB), "
+                    f"trainable={trainable_backbone:,} ({trainable_backbone_mb:.2f} MB) "
+                    f"({pct_backbone:.4f}%)"
+                )
+
+                # module-wise summary (group by first two name parts) — show only modules with trainable params
+                module_stats = {}
+                for name, param in model.backbone.named_parameters():
+                    parts = name.split('.')
+                    module_key = '.'.join(parts[:2]) if len(parts) >= 2 else parts[0]
+                    if module_key not in module_stats:
+                        module_stats[module_key] = {'trainable_bytes': 0, 'total_bytes': 0}
+                    bytes_cnt = param.element_size() * param.numel()
+                    module_stats[module_key]['total_bytes'] += bytes_cnt
+                    if param.requires_grad:
+                        module_stats[module_key]['trainable_bytes'] += bytes_cnt
+
+                logger.info("Backbone module-wise trainable summary (modules with any trainable params):")
+                for mod, stats in sorted(module_stats.items()):
+                    if stats['trainable_bytes'] > 0:
+                        train_mb = stats['trainable_bytes'] / (1024.0 ** 2)
+                        total_mb_mod = stats['total_bytes'] / (1024.0 ** 2)
+                        pct = 100.0 * stats['trainable_bytes'] / stats['total_bytes'] if stats['total_bytes'] > 0 else 0.0
+                        logger.info(f"  {mod:40s} {train_mb:8.2f} MB / {total_mb_mod:8.2f} MB ({pct:5.2f}%)")
+            except Exception as e_mod:
+                logger.warning(f"Failed to compute backbone stats: {e_mod}")
+    except Exception as e:
+        logger.warning(f"Failed to compute model parameter stats: {e}")
+    # --- end parameter statistics ---
 
     # prepare the optimizer
     optimizer = choose_optimizer(model, config)

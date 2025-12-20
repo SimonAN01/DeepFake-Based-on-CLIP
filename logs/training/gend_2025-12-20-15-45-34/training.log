@@ -1,0 +1,98 @@
+2025-12-20 15:45:34,076 - INFO - Save log to ./logs/training/gend_2025-12-20-15-45-34
+2025-12-20 15:45:34,076 - INFO - --------------- Configuration ---------------
+2025-12-20 15:45:34,077 - INFO - === Data Loading Format: LMDB ===
+2025-12-20 15:45:34,077 - INFO - LMDB directory: ./datasets/lmdb
+2025-12-20 15:45:34,077 - INFO - LMDB directory exists: ./datasets/lmdb
+2025-12-20 15:45:34,077 - INFO - Parameters: 
+log_dir: ./logs/training/
+pretrained: no need to provide this for the gend model
+model_name: gend
+backbone_name: vit
+backbone_config: {'mode': 'original', 'num_classes': 2, 'inc': 3, 'dropout': False}
+backbone: openai/clip-vit-large-patch14
+backbone_args: None
+head: linear
+num_classes: 2
+inference_strategy: softmax
+loss: {'ce_labels': 1.0, 'label_smoothing': 0.0, 'uniformity': 0.5, 'alignment_labels': 0.1}
+freeze_feature_extractor: True
+unfreeze_layers: ['pre_layrnorm', 'layer_norm1', 'layer_norm2', 'post_layernorm']
+peft_v2: None
+verbose: False
+all_dataset: ['FaceForensics++', 'FF-F2F', 'FF-DF', 'FF-FS', 'FF-NT', 'FaceShifter', 'DeepFakeDetection', 'Celeb-DF-v1', 'Celeb-DF-v2', 'DFDCP', 'DFDC', 'DeeperForensics-1.0', 'UADFV']
+train_dataset: ['FaceForensics++']
+test_dataset: ['FaceForensics++', 'Celeb-DF-v2']
+compression: c23
+train_batchSize: 32
+test_batchSize: 32
+workers: 0
+frame_num: {'train': 32, 'test': 32}
+resolution: 224
+with_mask: False
+with_landmark: False
+use_data_augmentation: True
+data_aug: {'flip_prob': 0.5, 'rotate_prob': 0.5, 'rotate_limit': [-10, 10], 'blur_prob': 0.5, 'blur_limit': [3, 7], 'brightness_prob': 0.5, 'brightness_limit': [-0.1, 0.1], 'contrast_limit': [-0.1, 0.1], 'quality_lower': 40, 'quality_upper': 100}
+mean: [0.48145466, 0.4578275, 0.40821073]
+std: [0.26862954, 0.26130258, 0.27577711]
+optimizer: {'type': 'adam', 'adam': {'lr': 0.0003, 'beta1': 0.9, 'beta2': 0.999, 'eps': 1e-08, 'weight_decay': 0.0, 'amsgrad': False}, 'sgd': {'lr': 0.0003, 'momentum': 0.9, 'weight_decay': 0.0}}
+lr_scheduler: cosine
+lr_T_max: 10
+lr_eta_min: 1e-05
+warmup_epochs: 0.0
+nEpochs: 10
+start_epoch: 0
+save_epoch: 1
+rec_iter: 100
+logdir: ./logs
+manualSeed: 42
+save_ckpt: True
+save_feat: False
+loss_func: cross_entropy
+losstype: None
+metric_scoring: auc
+ngpu: 1
+cuda: True
+cudnn: True
+save_avg: True
+mode: train
+lmdb: True
+dry_run: False
+rgb_dir: ./datasets/rgb
+lmdb_dir: ./datasets/lmdb
+dataset_json_folder: preprocessing/dataset_json
+SWA: False
+label_dict: {'DFD_fake': 1, 'DFD_real': 0, 'FF-SH': 1, 'FF-F2F': 1, 'FF-DF': 1, 'FF-FS': 1, 'FF-NT': 1, 'FF-FH': 1, 'FF-real': 0, 'CelebDFv1_real': 0, 'CelebDFv1_fake': 1, 'CelebDFv2_real': 0, 'CelebDFv2_fake': 1, 'DFDCP_Real': 0, 'DFDCP_FakeA': 1, 'DFDCP_FakeB': 1, 'DFDC_Fake': 1, 'DFDC_Real': 0, 'DF_fake': 1, 'DF_real': 0, 'UADFV_Fake': 1, 'UADFV_Real': 0, 'roop_Real': 0, 'roop_Fake': 1, 'times_per_epoch': 1}
+local_rank: 0
+ddp: False
+
+2025-12-20 15:45:34,420 - INFO - Using LMDB format for data loading. LMDB path: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:45:34,421 - INFO - LMDB database found at: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:45:34,662 - INFO - Using LMDB format for data loading. LMDB path: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:45:34,662 - INFO - LMDB database found at: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:45:34,778 - INFO - Using LMDB format for data loading. LMDB path: ./datasets/lmdb\Celeb-DF-v2_lmdb
+2025-12-20 15:45:34,778 - INFO - LMDB database found at: ./datasets/lmdb\Celeb-DF-v2_lmdb
+2025-12-20 15:45:37,532 - INFO - Initialized CLIP encoder: openai/clip-vit-large-patch14
+2025-12-20 15:45:37,532 - INFO - Initialized linear head: input_dim=1024, num_classes=2, normalize_inputs=False
+2025-12-20 15:45:37,532 - INFO - Using GenD custom loss: ce_labels=1.0, alignment=0.1, uniformity=0.5
+2025-12-20 15:45:37,534 - INFO - Feature extractor frozen: True
+2025-12-20 15:45:37,534 - INFO - Unfrozen layers: ['pre_layrnorm', 'layer_norm1', 'layer_norm2', 'post_layernorm']
+2025-12-20 15:45:37,840 - INFO - ===> Epoch[0] start!
+2025-12-20 15:45:37,866 - INFO - data_dict saved to ./logs/training/gend_2025-12-20-15-45-34\train\FaceForensics++\data_dict_train.pickle
+2025-12-20 15:45:41,715 - INFO - Iter: 0    training-loss, overall: -0.23119628429412842    training-loss, ce_loss: 0.7101731896400452    training-loss, alignment_loss: 0.10685566812753677    training-loss, uniformity_loss: -1.0482251644134521    
+2025-12-20 15:45:41,721 - INFO - Iter: 0    training-metric, acc: 0.53125    training-metric, auc: 0.5636363636363636    training-metric, eer: 0.5    training-metric, ap: 0.781584637127389    
+2025-12-20 15:51:59,692 - INFO - Iter: 300    training-loss, overall: -0.9291284680366516    training-loss, ce_loss: 0.4078811118006706    training-loss, alignment_loss: 0.15136714316904545    training-loss, uniformity_loss: -1.488376809755961    
+2025-12-20 15:51:59,692 - INFO - Iter: 300    training-metric, acc: 0.8014583333333334    training-metric, auc: 0.7810899633551904    training-metric, eer: 0.28441178850877896    training-metric, ap: 0.9403005535369964    
+2025-12-20 15:58:18,346 - INFO - Iter: 600    training-loss, overall: -1.225045919418335    training-loss, ce_loss: 0.3746714035173257    training-loss, alignment_loss: 0.17990898380676906    training-loss, uniformity_loss: -1.779626191854477    
+2025-12-20 15:58:18,347 - INFO - Iter: 600    training-metric, acc: 0.8072916666666666    training-metric, auc: 0.8310978793549186    training-metric, eer: 0.23361959482360858    training-metric, ap: 0.9563049293169259    
+2025-12-20 16:04:38,854 - INFO - Iter: 900    training-loss, overall: -1.3341389894485474    training-loss, ce_loss: 0.34739216645558674    training-loss, alignment_loss: 0.1886064466337363    training-loss, uniformity_loss: -1.8701369408766428    
+2025-12-20 16:04:38,855 - INFO - Iter: 900    training-metric, acc: 0.8233333333333334    training-metric, auc: 0.8636294228763258    training-metric, eer: 0.21057725255049692    training-metric, ap: 0.964929808120198    
+2025-12-20 16:10:57,406 - INFO - Iter: 1200    training-loss, overall: -1.3991361856460571    training-loss, ce_loss: 0.3198346450924873    training-loss, alignment_loss: 0.19248768458763757    training-loss, uniformity_loss: -1.9114586949348449    
+2025-12-20 16:10:57,407 - INFO - Iter: 1200    training-metric, acc: 0.8416666666666667    training-metric, auc: 0.8912593653385286    training-metric, eer: 0.18085654160654174    training-metric, ap: 0.9711169326820448    
+2025-12-20 16:17:15,747 - INFO - Iter: 1500    training-loss, overall: -1.4324183464050293    training-loss, ce_loss: 0.30815080473820367    training-loss, alignment_loss: 0.19489323650797208    training-loss, uniformity_loss: -1.93546226978302    
+2025-12-20 16:17:15,747 - INFO - Iter: 1500    training-metric, acc: 0.8491666666666666    training-metric, auc: 0.8965251393442151    training-metric, eer: 0.15833693158693177    training-metric, ap: 0.9742565275286164    
+2025-12-20 16:23:36,684 - INFO - Iter: 1800    training-loss, overall: -1.4557327032089233    training-loss, ce_loss: 0.2953218805789948    training-loss, alignment_loss: 0.19593159332871438    training-loss, uniformity_loss: -1.9469856083393098    
+2025-12-20 16:23:36,685 - INFO - Iter: 1800    training-metric, acc: 0.8645833333333334    training-metric, auc: 0.9116645846160613    training-metric, eer: 0.14743227786706065    training-metric, ap: 0.9763572600643831    
+2025-12-20 16:29:56,294 - INFO - Iter: 2100    training-loss, overall: -1.4760197401046753    training-loss, ce_loss: 0.28314787107209366    training-loss, alignment_loss: 0.1966421176493168    training-loss, uniformity_loss: -1.9558101161321004    
+2025-12-20 16:29:56,294 - INFO - Iter: 2100    training-metric, acc: 0.8692708333333333    training-metric, auc: 0.9194382757200626    training-metric, eer: 0.14875168350168363    training-metric, ap: 0.9785162157701486    
+2025-12-20 16:36:17,589 - INFO - Iter: 2400    training-loss, overall: -1.4888075590133667    training-loss, ce_loss: 0.2738464556386073    training-loss, alignment_loss: 0.19703594133257865    training-loss, uniformity_loss: -1.9596900284290313    
+2025-12-20 16:36:17,590 - INFO - Iter: 2400    training-metric, acc: 0.8767708333333334    training-metric, auc: 0.9188737259942432    training-metric, eer: 0.14796391571391584    training-metric, ap: 0.9796665111509437    

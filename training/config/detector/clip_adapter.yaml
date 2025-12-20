@@ -9,10 +9,12 @@ backbone_name: vit                # 仅使用 CLIP 的视觉编码器
 
 # backbone 相关设置（后续可根据需要扩展）
 backbone_config:
-  mode: ln_tuning                 # 轻量微调策略：只调 LayerNorm 等小参数
+  mode: ln_tuning                 # 冻结策略：ln_tuning（仅 LayerNorm）| last_n_layers（解冻最后 N 层）| full（全解冻）
   num_classes: 2
   inc: 3
   dropout: false
+  # 当 mode=last_n_layers 时，解冻最后几层 Transformer（例如 2 表示最后 2 层）
+  unfreeze_last_n_layers: 0
 
 # 数据集与跨域评估设置
 all_dataset: [FaceForensics++, FF-F2F, FF-DF, FF-FS, FF-NT, FaceShifter, DeepFakeDetection, Celeb-DF-v1, Celeb-DF-v2, DFDCP, DFDC, DeeperForensics-1.0, UADFV]
@@ -95,8 +97,11 @@ aux_losses:
   alignment_weight: 0.1
   use_freq_consistency: false
   freq_consistency_weight: 0.1
-  use_adversarial_identity: false
-  adversarial_identity_weight: 0.1
+  use_adversarial_identity: false  # 暂时关闭 GRL 对抗损失，先训练其他模块
+  adversarial_identity_weight: 0.01
+  # 身份分支相关
+  id_dim: 128
+  adv_lambda: 0.1
 
 # 评估指标
 metric_scoring: auc

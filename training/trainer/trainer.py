@@ -241,8 +241,9 @@ class Trainer(object):
             self.setTrain()
             # more elegant and more scalable way of moving data to GPU
             for key in data_dict.keys():
-                if data_dict[key]!=None and key!='name':
-                    data_dict[key]=data_dict[key].cuda()
+                # 只对张量类型的数据调用 cuda，避免如 video_name 这样的 Python 列表出错
+                if data_dict[key] is not None and isinstance(data_dict[key], torch.Tensor):
+                    data_dict[key] = data_dict[key].cuda()
 
             losses,predictions=self.train_step(data_dict)
 
@@ -352,10 +353,10 @@ class Trainer(object):
             if 'label_spe' in data_dict:
                 data_dict.pop('label_spe')  # remove the specific label
             data_dict['label'] = torch.where(data_dict['label']!=0, 1, 0)  # fix the label to 0 and 1 only
-            # move data to GPU elegantly
+            # move data to GPU elegantly（仅对张量调用 cuda）
             for key in data_dict.keys():
-                if data_dict[key]!=None:
-                    data_dict[key]=data_dict[key].cuda()
+                if data_dict[key] is not None and isinstance(data_dict[key], torch.Tensor):
+                    data_dict[key] = data_dict[key].cuda()
             # model forward without considering gradient computation
             predictions = self.inference(data_dict)
             label_lists += list(data_dict['label'].cpu().detach().numpy())

@@ -15,6 +15,7 @@ import math
 import yaml
 import glob
 import json
+import threading
 
 import numpy as np
 from copy import deepcopy
@@ -70,47 +71,84 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
         # Dataset dictionary
         self.image_list = []
         self.label_list = []
+        self.video_name_list = []
         
         # Set the dataset dictionary based on the mode
+        # 延迟初始化 LMDB Environment，避免 Windows 多进程 pickle 问题
+        # 使用线程本地存储，确保每个 worker 进程完全独立
+        self._local = threading.local()
+        self._lmdb_path = None
+        
         if mode == 'train':
             dataset_list = config['train_dataset']
             # Training data should be collected together for training
-            image_list, label_list = [], []
+            image_list, label_list, name_list = [], [], []
             for one_data in dataset_list:
                 tmp_image, tmp_label, tmp_name = self.collect_img_and_label_for_one_dataset(one_data)
                 image_list.extend(tmp_image)
                 label_list.extend(tmp_label)
+                name_list.extend(tmp_name)
             if self.lmdb:
                 if len(dataset_list)>1:
                     if all_in_pool(dataset_list,FFpp_pool):
-                        lmdb_path = os.path.join(config['lmdb_dir'], f"FaceForensics++_lmdb")
-                        self.env = lmdb.open(lmdb_path, create=False, subdir=True, readonly=True, lock=False)
+                        self._lmdb_path = os.path.join(config['lmdb_dir'], f"FaceForensics++_lmdb")
                     else:
                         raise ValueError('Training with multiple dataset and lmdb is not implemented yet.')
                 else:
-                    lmdb_path = os.path.join(config['lmdb_dir'], f"{dataset_list[0] if dataset_list[0] not in FFpp_pool else 'FaceForensics++'}_lmdb")
-                    self.env = lmdb.open(lmdb_path, create=False, subdir=True, readonly=True, lock=False)
+                    self._lmdb_path = os.path.join(config['lmdb_dir'], f"{dataset_list[0] if dataset_list[0] not in FFpp_pool else 'FaceForensics++'}_lmdb")
         elif mode == 'test':
             one_data = config['test_dataset']
             # Test dataset should be evaluated separately. So collect only one dataset each time
             image_list, label_list, name_list = self.collect_img_and_label_for_one_dataset(one_data)
             if self.lmdb:
-                lmdb_path = os.path.join(config['lmdb_dir'], f"{one_data}_lmdb" if one_data not in FFpp_pool else 'FaceForensics++_lmdb')
-                self.env = lmdb.open(lmdb_path, create=False, subdir=True, readonly=True, lock=False)
+                self._lmdb_path = os.path.join(config['lmdb_dir'], f"{one_data}_lmdb" if one_data not in FFpp_pool else 'FaceForensics++_lmdb')
         else:
             raise NotImplementedError('Only train and test modes are supported.')
 
         assert len(image_list)!=0 and len(label_list)!=0, f"Collect nothing for {mode} mode!"
-        self.image_list, self.label_list = image_list, label_list
+        self.image_list, self.label_list, self.video_name_list = image_list, label_list, list(name_list)
 
 
-        # Create a dictionary containing the image and label lists
+        # Create a dictionary containing the image, label and video-name lists
         self.data_dict = {
-            'image': self.image_list, 
-            'label': self.label_list, 
+            'image': self.image_list,
+            'label': self.label_list,
+            'video_name': self.video_name_list,
         }
         
+        # Log LMDB usage status
+        if self.lmdb:
+            if self._lmdb_path is not None:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.info(f"Using LMDB format for data loading. LMDB path: {self._lmdb_path}")
+                # Verify LMDB exists
+                if not os.path.exists(self._lmdb_path):
+                    logger.warning(f"LMDB path does not exist: {self._lmdb_path}. Please ensure LMDB database is created.")
+                else:
+                    logger.info(f"LMDB database found at: {self._lmdb_path}")
+            else:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.warning("LMDB is enabled but _lmdb_path is None. Falling back to RGB format.")
+        else:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.info("Using RGB format for data loading (lmdb=False).")
+        
         self.transform = self.init_data_aug_method()
+    
+    def _get_env(self):
+        """
+        延迟初始化 LMDB Environment，避免 Windows 多进程 pickle 问题。
+        使用线程本地存储，确保每个 worker 进程完全独立，不会互相干扰。
+        """
+        if not hasattr(self._local, 'env'):
+            if self.lmdb and self._lmdb_path is not None:
+                self._local.env = lmdb.open(self._lmdb_path, create=False, subdir=True, readonly=True, lock=False)
+            else:
+                self._local.env = None
+        return self._local.env
         
     def init_data_aug_method(self):
         trans = A.Compose([           
@@ -315,7 +353,8 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             if img is None:
                 raise ValueError('Loaded image is None: {}'.format(file_path))
         elif self.lmdb:
-            with self.env.begin(write=False) as txn:
+            env = self._get_env()
+            with env.begin(write=False) as txn:
                 # transfer the path format from rgb-path to lmdb-key
                 if file_path[0]=='.':
                     file_path=file_path.replace('./datasets\\','')
@@ -354,7 +393,8 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             else:
                 return np.zeros((size, size, 1))
         else:
-            with self.env.begin(write=False) as txn:
+            env = self._get_env()
+            with env.begin(write=False) as txn:
                 # transfer the path format from rgb-path to lmdb-key
                 if file_path[0]=='.':
                     file_path=file_path.replace('./datasets\\','')
@@ -393,7 +433,8 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             else:
                 return np.zeros((81, 2))
         else:
-            with self.env.begin(write=False) as txn:
+            env = self._get_env()
+            with env.begin(write=False) as txn:
                 # transfer the path format from rgb-path to lmdb-key
                 if file_path[0]=='.':
                     file_path=file_path.replace('./datasets\\','')
@@ -477,9 +518,10 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             A tuple containing the image tensor, the label tensor, the landmark tensor,
             and the mask tensor.
         """
-        # Get the image paths and label
+        # Get the image paths, label and video_name
         image_paths = self.data_dict['image'][index]
         label = self.data_dict['label'][index]
+        video_name = self.data_dict['video_name'][index]
 
         if not isinstance(image_paths, list):
             image_paths = [image_paths]  # for the image-level IO, only one frame is used
@@ -553,7 +595,7 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             if not any(m is None or (isinstance(m, list) and None in m) for m in mask_tensors):
                 mask_tensors = mask_tensors[0]
 
-        return image_tensors, label, landmark_tensors, mask_tensors
+        return image_tensors, label, landmark_tensors, mask_tensors, video_name
     
     @staticmethod
     def collate_fn(batch):
@@ -568,8 +610,8 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
             A tuple containing the image tensor, the label tensor, the landmark tensor,
             and the mask tensor.
         """
-        # Separate the image, label, landmark, and mask tensors
-        images, labels, landmarks, masks = zip(*batch)
+        # Separate the image, label, landmark, mask and video_name
+        images, labels, landmarks, masks, video_names = zip(*batch)
         
         # Stack the image, label, landmark, and mask tensors
         images = torch.stack(images, dim=0)
@@ -592,6 +634,8 @@ class DeepfakeAbstractBaseDataset(data.Dataset):
         data_dict['label'] = labels
         data_dict['landmark'] = landmarks
         data_dict['mask'] = masks
+        # video_names 是长度为 batch_size 的 tuple/list，保持为 Python 列表即可
+        data_dict['video_name'] = list(video_names)
         return data_dict
 
     def __len__(self):

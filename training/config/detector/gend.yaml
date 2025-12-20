@@ -1,0 +1,132 @@
+# log dir 
+log_dir: ./logs/training/gend
+
+# model setting
+pretrained: 'no need to provide this for the gend model'
+model_name: gend   # model name
+backbone_name: vit  # backbone name (CLIP uses ViT)
+
+#backbone setting (for compatibility, GenD uses its own config)
+backbone_config:
+  mode: original
+  num_classes: 2
+  inc: 3
+  dropout: false
+
+# GenD specific settings (matching GenD-main Config structure)
+backbone: openai/clip-vit-large-patch14  # CLIP model (default: CLIP_B_32 in GenD-main, but CLIP_L_14 is commonly used)
+backbone_args: null  # Arguments for backbone (default: null in GenD-main)
+head: linear  # head type: 'linear' or 'LinearNorm' (matching GenD-main Head enum)
+num_classes: 2
+inference_strategy: softmax  # Inference strategy (default: 'softmax' in GenD-main)
+
+# GenD loss configuration (matching GenD-main Config.loss structure)
+# Note: GenD paper uses uniformity=0.5 and alignment_labels=0.1 for best results
+# These losses are core components of GenD method for hyperspherical feature manifold
+loss:
+  ce_labels: 1.0              # Cross-entropy loss weight (default: 1.0 in GenD-main)
+  label_smoothing: 0.0         # Label smoothing coefficient (default: 0.0)
+  uniformity: 0.5              # Uniformity loss weight (GenD paper default: 0.5 for "wacv-LN+L2+UnAl")
+  alignment_labels: 0.1        # Alignment loss weight (GenD paper default: 0.1 for "wacv-LN+L2+UnAl")
+
+# Parameter freezing (matching GenD-main Config structure)
+freeze_feature_extractor: true  # Freeze CLIP encoder (default: true in GenD-main)
+# LN-tuning strategy: unfreeze LayerNorm layers — use general substrings for robust matching
+# Use broad substrings so parameter-name substring matching will hit different CLIP naming conventions
+# e.g. 'ln', 'ln_pre', 'layernorm', 'ln_1', 'ln_2', 'ln_post' etc.
+unfreeze_layers:
+  - ln
+  - layernorm
+
+# PEFT/LoRA configuration (matching GenD-main peft_v2 structure)
+peft_v2: null  # Set to null to disable, or configure LoRA below
+# peft_v2:
+#   lora:
+#     target_modules: ['out_proj']  # Default in GenD-main: ['out_proj']
+#     rank: 1                       # Default in GenD-main: 1
+#     alpha: 32                     # Default in GenD-main: 32
+#     dropout: 0.05                 # Default in GenD-main: 0.05
+#     bias: 'none'                  # Default in GenD-main: 'none'
+#     use_rslora: false             # Default in GenD-main: false
+#     use_dora: false               # Default in GenD-main: false
+
+# Verbose mode (print trainable parameters)
+verbose: true  # enable detailed trainable-parameter logging (prints counts at init)
+
+# dataset
+all_dataset: [FaceForensics++, FF-F2F, FF-DF, FF-FS, FF-NT, FaceShifter, DeepFakeDetection, Celeb-DF-v1, Celeb-DF-v2, DFDCP, DFDC, DeeperForensics-1.0, UADFV]
+train_dataset: [FaceForensics++]
+test_dataset: [FaceForensics++, Celeb-DF-v2]
+
+compression: c23  # compression-level for videos
+train_batchSize: 32   # training batch size
+test_batchSize: 32   # test batch size
+workers: 0   # number of data loading workers (0 for Windows to avoid pickle issues)
+frame_num: {'train': 32, 'test': 32}   # number of frames to use per video in training and testing
+resolution: 224   # resolution of output image to network
+with_mask: false   # whether to include mask information in the input
+with_landmark: false   # whether to include facial landmark information in the input
+
+
+# data augmentation
+use_data_augmentation: true  # Add this flag to enable/disable data augmentation
+data_aug:
+  flip_prob: 0.5
+  rotate_prob: 0.5
+  rotate_limit: [-10, 10]
+  blur_prob: 0.5
+  blur_limit: [3, 7]
+  brightness_prob: 0.5
+  brightness_limit: [-0.1, 0.1]
+  contrast_limit: [-0.1, 0.1]
+  quality_lower: 40
+  quality_upper: 100
+
+# mean and std for normalization (CLIP normalization values)
+mean: [0.48145466, 0.4578275, 0.40821073]
+std: [0.26862954, 0.26130258, 0.27577711]
+
+# optimizer config (matching GenD-main defaults)
+optimizer:
+  # choose between 'adam' and 'sgd'
+  type: adam
+  adam:
+    lr: 0.0003  # learning rate (default: 0.0003 in GenD-main, was 3e-4)
+    beta1: 0.9  # beta1 for Adam optimizer (default: 0.9)
+    beta2: 0.999 # beta2 for Adam optimizer (default: 0.999)
+    eps: 0.00000001  # epsilon for Adam optimizer
+    weight_decay: 0.0  # weights decay (default: 0.0 in GenD-main)
+    amsgrad: false
+  sgd:
+    lr: 0.0003  # learning rate
+    momentum: 0.9  # momentum for SGD optimizer
+    weight_decay: 0.0  # weights decay
+
+# training config (matching GenD-main defaults)
+lr_scheduler: cosine   # learning rate scheduler (default: 'cosine' in GenD-main)
+lr_T_max: 10           # T_max for cosine annealing
+lr_eta_min: 0.00001    # minimum learning rate (default: 1e-5 in GenD-main, was min_lr)
+warmup_epochs: 0.0      # Number of warmup epochs (default: 0.0 in GenD-main, can be 1.0)
+nEpochs: 10   # number of epochs to train for
+start_epoch: 0   # manual epoch number (useful for restarts)
+save_epoch: 1   # interval epochs for saving models
+rec_iter: 100   # interval iterations for recording
+logdir: ./logs   # folder to output images and logs
+manualSeed: 42   # manual seed for random number generation (matching GenD-main default)
+save_ckpt: true   # whether to save checkpoint
+save_feat: false   # whether to save features
+
+# loss function (for DeepfakeBench compatibility, GenD uses 'loss' config above)
+loss_func: cross_entropy   # Standard loss function (GenD uses custom 'loss' config)
+losstype: null
+
+# metric
+metric_scoring: auc   # metric for evaluation (auc, acc, eer, ap)
+
+# cuda
+ngpu: 1   # number of GPUs to use
+cuda: true   # whether to use CUDA acceleration
+cudnn: true   # whether to use CuDNN for convolution operations
+
+save_avg: true
+

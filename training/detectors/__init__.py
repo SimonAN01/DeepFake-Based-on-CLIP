@@ -45,3 +45,6 @@ from .multi_attention_detector import MultiAttentionDetector
 from .sia_detector import SIADetector
 from .tall_detector import TALLDetector
 from .effort_detector import EffortDetector
+from .gend_detector import GenDDetector
+from .forada_detector import ForAdaDetector
+from .fsfm_detector import FSFMDetector

@@ -155,9 +155,9 @@ def inference(model, data_dict):
 
 def main():
     # parse options and load config
-    with open(args.detector_path, 'r') as f:
+    with open(args.detector_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
-    with open('./training/config/test_config.yaml', 'r') as f:
+    with open('./training/config/test_config.yaml', 'r', encoding='utf-8') as f:
         config2 = yaml.safe_load(f)
     config.update(config2)
     if 'label_dict' in config:

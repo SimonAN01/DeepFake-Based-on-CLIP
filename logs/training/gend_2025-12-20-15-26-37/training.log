@@ -1,0 +1,80 @@
+2025-12-20 15:26:37,856 - INFO - Save log to ./logs/training/gend_2025-12-20-15-26-37
+2025-12-20 15:26:37,856 - INFO - --------------- Configuration ---------------
+2025-12-20 15:26:37,856 - INFO - === Data Loading Format: LMDB ===
+2025-12-20 15:26:37,856 - INFO - LMDB directory: ./datasets/lmdb
+2025-12-20 15:26:37,856 - INFO - LMDB directory exists: ./datasets/lmdb
+2025-12-20 15:26:37,857 - INFO - Parameters: 
+log_dir: ./logs/training/
+pretrained: no need to provide this for the gend model
+model_name: gend
+backbone_name: vit
+backbone_config: {'mode': 'original', 'num_classes': 2, 'inc': 3, 'dropout': False}
+backbone: openai/clip-vit-large-patch14
+backbone_args: None
+head: linear
+num_classes: 2
+inference_strategy: softmax
+loss: {'ce_labels': 1.0, 'label_smoothing': 0.0, 'uniformity': 0.5, 'alignment_labels': 0.1}
+freeze_feature_extractor: True
+unfreeze_layers: ['pre_layrnorm', 'layer_norm1', 'layer_norm2', 'post_layernorm']
+peft_v2: None
+verbose: False
+all_dataset: ['FaceForensics++', 'FF-F2F', 'FF-DF', 'FF-FS', 'FF-NT', 'FaceShifter', 'DeepFakeDetection', 'Celeb-DF-v1', 'Celeb-DF-v2', 'DFDCP', 'DFDC', 'DeeperForensics-1.0', 'UADFV']
+train_dataset: ['FaceForensics++']
+test_dataset: ['FaceForensics++', 'Celeb-DF-v2']
+compression: c23
+train_batchSize: 128
+test_batchSize: 128
+workers: 0
+frame_num: {'train': 32, 'test': 32}
+resolution: 224
+with_mask: False
+with_landmark: False
+use_data_augmentation: True
+data_aug: {'flip_prob': 0.5, 'rotate_prob': 0.5, 'rotate_limit': [-10, 10], 'blur_prob': 0.5, 'blur_limit': [3, 7], 'brightness_prob': 0.5, 'brightness_limit': [-0.1, 0.1], 'contrast_limit': [-0.1, 0.1], 'quality_lower': 40, 'quality_upper': 100}
+mean: [0.48145466, 0.4578275, 0.40821073]
+std: [0.26862954, 0.26130258, 0.27577711]
+optimizer: {'type': 'adam', 'adam': {'lr': 0.0003, 'beta1': 0.9, 'beta2': 0.999, 'eps': 1e-08, 'weight_decay': 0.0, 'amsgrad': False}, 'sgd': {'lr': 0.0003, 'momentum': 0.9, 'weight_decay': 0.0}}
+lr_scheduler: cosine
+lr_T_max: 10
+lr_eta_min: 1e-05
+warmup_epochs: 0.0
+nEpochs: 10
+start_epoch: 0
+save_epoch: 1
+rec_iter: 100
+logdir: ./logs
+manualSeed: 1024
+save_ckpt: True
+save_feat: False
+loss_func: cross_entropy
+losstype: None
+metric_scoring: auc
+ngpu: 1
+cuda: True
+cudnn: True
+save_avg: True
+mode: train
+lmdb: True
+dry_run: False
+rgb_dir: ./datasets/rgb
+lmdb_dir: ./datasets/lmdb
+dataset_json_folder: preprocessing/dataset_json
+SWA: False
+label_dict: {'DFD_fake': 1, 'DFD_real': 0, 'FF-SH': 1, 'FF-F2F': 1, 'FF-DF': 1, 'FF-FS': 1, 'FF-NT': 1, 'FF-FH': 1, 'FF-real': 0, 'CelebDFv1_real': 0, 'CelebDFv1_fake': 1, 'CelebDFv2_real': 0, 'CelebDFv2_fake': 1, 'DFDCP_Real': 0, 'DFDCP_FakeA': 1, 'DFDCP_FakeB': 1, 'DFDC_Fake': 1, 'DFDC_Real': 0, 'DF_fake': 1, 'DF_real': 0, 'UADFV_Fake': 1, 'UADFV_Real': 0, 'roop_Real': 0, 'roop_Fake': 1, 'times_per_epoch': 1}
+local_rank: 0
+ddp: False
+
+2025-12-20 15:26:38,205 - INFO - Using LMDB format for data loading. LMDB path: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:26:38,206 - INFO - LMDB database found at: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:26:38,449 - INFO - Using LMDB format for data loading. LMDB path: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:26:38,450 - INFO - LMDB database found at: ./datasets/lmdb\FaceForensics++_lmdb
+2025-12-20 15:26:38,566 - INFO - Using LMDB format for data loading. LMDB path: ./datasets/lmdb\Celeb-DF-v2_lmdb
+2025-12-20 15:26:38,566 - INFO - LMDB database found at: ./datasets/lmdb\Celeb-DF-v2_lmdb
+2025-12-20 15:26:41,367 - INFO - Initialized CLIP encoder: openai/clip-vit-large-patch14
+2025-12-20 15:26:41,368 - INFO - Initialized linear head: input_dim=1024, num_classes=2, normalize_inputs=False
+2025-12-20 15:26:41,369 - INFO - Using GenD custom loss: ce_labels=1.0, alignment=0.1, uniformity=0.5
+2025-12-20 15:26:41,371 - INFO - Feature extractor frozen: True
+2025-12-20 15:26:41,371 - INFO - Unfrozen layers: ['pre_layrnorm', 'layer_norm1', 'layer_norm2', 'post_layernorm']
+2025-12-20 15:26:41,678 - INFO - ===> Epoch[0] start!
+2025-12-20 15:26:41,706 - INFO - data_dict saved to ./logs/training/gend_2025-12-20-15-26-37\train\FaceForensics++\data_dict_train.pickle
