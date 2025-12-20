@@ -12,8 +12,8 @@ lmdb: True  # 是否使用LMDB数据库格式存储数据，True=使用LMDB(更�
 dry_run: false  # 是否为干运行模式，True=只运行一个epoch用于调试，False=正常训练
 
 # 数据路径配置
-rgb_dir: './datasets/rgb'  # RGB图片格式数据的根目录路径
-lmdb_dir:  './datasets/lmdb'  # LMDB数据库格式数据的根目录路径
+rgb_dir: '../datasets/rgb'  # RGB图片格式数据的根目录路径
+lmdb_dir:  '../datasets/lmdb'  # LMDB数据库格式数据的根目录路径
 dataset_json_folder: './preprocessing/dataset_json'  # 数据集JSON配置文件的存放目录
 
 # 模型训练策略
